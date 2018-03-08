@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "webpack": "webpack --config webpack.config.js"
+    "webpack": "webpack --config webpack.config.js",
+    "start": "webpack --config webpack.config.js --watch"
   },
   "author": "dawee (David Corticchiato) <david.corticchiato@gmail.com>",
   "devDependencies": {
