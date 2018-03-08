@@ -1,0 +1,14 @@
+{
+  "name": "sky-bikes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "webpack": "webpack --config webpack.config.js"
+  },
+  "author": "dawee (David Corticchiato) <david.corticchiato@gmail.com>",
+  "devDependencies": {
+    "webpack": "^4.1.1",
+    "webpack-cli": "^2.0.10"
+  }
+}
