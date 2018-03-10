@@ -2,7 +2,8 @@
   "user": {
     "0": {
       "email": "john.doe@gmail.com",
-      "uuid": "e472ac3cf5403f28f04cb497c769900f"
+      "uuid": "e472ac3cf5403f28f04cb497c769900f",
+      "role": "member"
     }
   }
 }

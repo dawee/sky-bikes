@@ -12,4 +12,15 @@ const createPostMethod = server => (uriPath, body) =>
       })
   );
 
-module.exports = { createPostMethod };
+const createGetMethod = server => uriPath =>
+  new Promise((resolve, reject) =>
+    supertest(server)
+      .get(uriPath)
+      .end((err, res) => {
+        if (err) return reject(err);
+
+        return resolve(res);
+      })
+  );
+
+module.exports = { createPostMethod, createGetMethod };

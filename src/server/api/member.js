@@ -1,6 +1,6 @@
 const hat = require('hat');
 
-const registerUser = context => async (req, res) => {
+const registerMember = context => async (req, res) => {
   const { User } = context;
   const { email } = req.body;
 
@@ -11,13 +11,14 @@ const registerUser = context => async (req, res) => {
   }
 
   const user = new User({
-    email: req.body.email,
-    uuid: hat()
+    email,
+    uuid: hat(),
+    role: 'member'
   });
 
   return user.save().then(() => res.send(user.toObject()).end());
 };
 
 module.exports = {
-  post: registerUser
+  post: registerMember
 };

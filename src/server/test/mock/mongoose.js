@@ -1,11 +1,21 @@
 const createModelMock = (db, name) => {
-  let idCounter = 0;
+  let idCounter = db.documents[name]
+    ? Object.keys(db.documents[name]).length
+    : 0;
 
   return class ModelMock {
     static findOne(filter) {
       const document = db.findOneDocument(name, filter);
 
       return Promise.resolve(document ? new ModelMock(document) : null);
+    }
+
+    static find(filter) {
+      const documents = db.findDocuments(name, filter);
+
+      return Promise.resolve(
+        documents.map(document => new ModelMock(document))
+      );
     }
 
     constructor(document) {
@@ -17,16 +27,19 @@ const createModelMock = (db, name) => {
     }
 
     save() {
-      const document = this.document._id
-        ? this.document
-        : { _id: idCounter++, ...this.document };
+      if (!this.document._id) {
+        this.document._id = idCounter++;
+      }
 
-      return Promise.resolve(
-        db.saveDocument(name, this.document._id, document)
-      );
+      db.saveDocument(name, this.document._id, this.document);
+
+      return Promise.resolve(new ModelMock(this.document));
     }
   };
 };
+
+const createFilterPredicate = filter => document =>
+  Object.keys(filter).every(key => document[key] === filter[key]);
 
 class DBMock {
   constructor(fixtures) {
@@ -42,17 +55,33 @@ class DBMock {
       predicate(this.documents[name][id])
     );
 
+    if (foundId === null || foundId === undefined) {
+      return null;
+    }
+
     return this.documents[name][foundId];
   }
 
-  findOneDocument(name, filter) {
-    if (!filter) {
-      return this.findDocument(name, () => true);
+  filterDocuments(name, predicate) {
+    if (!this.documents[name]) {
+      return [];
     }
 
-    return this.findDocument(name, document =>
-      Object.keys(filter).every(key => document[key] === filter[key])
-    );
+    return Object.keys(this.documents[name])
+      .filter(id => predicate(this.documents[name][id]))
+      .map(id => this.documents[name][id]);
+  }
+
+  findDocuments(name, filter) {
+    const predicate = filter ? createFilterPredicate(filter) : () => true;
+
+    return this.filterDocuments(name, predicate);
+  }
+
+  findOneDocument(name, filter) {
+    const predicate = filter ? createFilterPredicate(filter) : () => true;
+
+    return this.findDocument(name, predicate);
   }
 
   saveDocument(name, id, data) {
@@ -64,7 +93,11 @@ class DBMock {
   }
 }
 
-class SchemaMock {}
+class SchemaMock {
+  static get Types() {
+    return { ObjectId: null };
+  }
+}
 
 const createMongooseMock = fixtures => {
   const db = new DBMock(fixtures);

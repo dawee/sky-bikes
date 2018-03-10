@@ -1,15 +1,9 @@
 const test = require('ava');
-const createServer = require('..');
-const createMongooseMock = require('./mock/mongoose');
 const justRegisteredMemberFixtures = require('./fixtures/justRegisteredMember');
-const { createPostMethod } = require('./helper/request');
-const { createKeepSessionMiddleware } = require('./helper/session');
+const createContext = require('./helper/context');
 
 test('should create a session using his email address', async t => {
-  const mongooseMock = createMongooseMock(justRegisteredMemberFixtures);
-  const User = mongooseMock.model('user');
-  const server = await createServer(mongooseMock);
-  const post = createPostMethod(server);
+  const { User, post } = await createContext(justRegisteredMemberFixtures);
   const user = await User.findOne();
   const res = await post('/api/session', { user: user.toObject() });
 
@@ -17,28 +11,18 @@ test('should create a session using his email address', async t => {
 });
 
 test('should reserve a bike using a bike UUID if has valid session', async t => {
-  const mongooseMock = createMongooseMock(justRegisteredMemberFixtures);
-  const keepSession = createKeepSessionMiddleware();
-  const User = mongooseMock.model('user');
-  const Bike = mongooseMock.model('bike');
-  const server = await createServer(mongooseMock, [keepSession]);
-  const post = createPostMethod(server);
-  const user = await User.findOne();
+  const { Bike, post } = await createContext(justRegisteredMemberFixtures, {
+    role: 'member'
+  });
+
   const bike = await Bike.findOne({ reserved: false });
-
-  await post('/api/session', { user: user.toObject() });
-
   const res = await post('/api/reservation', { bike: bike.toObject() });
 
   t.is(res.status, 200);
 });
 
 test('should receive a 403 error if trying to reserve a bike without valid session', async t => {
-  const mongooseMock = createMongooseMock(justRegisteredMemberFixtures);
-  const keepSession = createKeepSessionMiddleware();
-  const Bike = mongooseMock.model('bike');
-  const server = await createServer(mongooseMock, [keepSession]);
-  const post = createPostMethod(server);
+  const { Bike, post } = await createContext(justRegisteredMemberFixtures);
   const bike = await Bike.findOne({ reserved: false });
   const res = await post('/api/reservation', { bike: bike.toObject() });
 

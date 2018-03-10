@@ -3,6 +3,10 @@ const makeReservation = context => async (req, res) => {
   const { bike: reqBike } = req.body;
   const { userUUID } = req.session;
 
+  if (!userUUID) {
+    return res.status(403).end();
+  }
+
   const user = await User.findOne({ uuid: userUUID });
 
   if (!user) {

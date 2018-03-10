@@ -1,9 +1,19 @@
+const hat = require('hat');
+
 const createBikeModel = mongoose => {
   const schema = new mongoose.Schema({
-    reserved: Boolean
+    reserved: Boolean,
+    color: String
   });
 
   return mongoose.model('bike', schema);
 };
 
-module.exports = createBikeModel;
+const createBike = (Bike, color) =>
+  new Bike({
+    color,
+    reserved: false,
+    uuid: hat()
+  }).save();
+
+module.exports = { createBike, createBikeModel };
