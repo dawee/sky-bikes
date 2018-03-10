@@ -1,8 +1,9 @@
-const makeAReservation = context => async (req, res) => {
+const makeReservation = context => async (req, res) => {
   const { User, Bike } = context;
-  const { user: reqUser, bike: reqBike } = req.body;
+  const { bike: reqBike } = req.body;
+  const { userUUID } = req.session;
 
-  const user = await User.findOne({ uuid: reqUser.uuid });
+  const user = await User.findOne({ uuid: userUUID });
 
   if (!user) {
     return res.status(403).end();
@@ -18,5 +19,5 @@ const makeAReservation = context => async (req, res) => {
 };
 
 module.exports = {
-  post: makeAReservation
+  post: makeReservation
 };

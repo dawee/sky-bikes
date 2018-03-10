@@ -46,6 +46,10 @@ class DBMock {
   }
 
   findOneDocument(name, filter) {
+    if (!filter) {
+      return this.findDocument(name, () => true);
+    }
+
     return this.findDocument(name, document =>
       Object.keys(filter).every(key => document[key] === filter[key])
     );

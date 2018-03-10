@@ -13,5 +13,5 @@ createServer(mongoose).then(server => {
     publicPath: webpackConfig.output.publicPath
   }));
 
-  server.listen(3000, () => console.log('Sky Bikes is now running on port 3000'));  
+  server.listen(3000, () => console.log('Sky Bikes is now running on port 3000'));
 });
