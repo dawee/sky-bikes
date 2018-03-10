@@ -6,11 +6,13 @@
   "scripts": {
     "start:app": "webpack-dev-server --open",
     "build": "webpack",
-    "start": "node src/core/index.js",
-    "lint": "eslint --fix src"
+    "start": "node ./bin/skybikes.com",
+    "lint": "eslint --fix src",
+    "test": "ava"
   },
   "author": "dawee (David Corticchiato) <david.corticchiato@gmail.com>",
   "devDependencies": {
+    "ava": "^0.25.0",
     "clean-webpack-plugin": "^0.1.19",
     "eslint": "^4.18.2",
     "eslint-config-prettier": "^2.9.0",
@@ -29,8 +31,17 @@
     "@babel/core": "^7.0.0-beta.40",
     "@babel/preset-env": "^7.0.0-beta.40",
     "babel-loader": "8.0.0-beta.0",
+    "body-parser": "^1.18.2",
     "eslint-plugin-prettier": "^2.6.0",
     "express": "^4.16.2",
-    "mongoose": "^5.0.9"
+    "hat": "^0.0.3",
+    "mongoose": "^5.0.9",
+    "nock": "^9.2.3",
+    "supertest": "^3.0.0"
+  },
+  "ava": {
+    "files": [
+      "src/**/test/*.js"
+    ]
   }
 }
