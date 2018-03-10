@@ -29,8 +29,8 @@ const createModelMock = (db, name) => {
 };
 
 class DBMock {
-  constructor() {
-    this.documents = {};
+  constructor(fixtures) {
+    this.documents = Object.create(fixtures || {});
   }
 
   findDocument(name, predicate) {
@@ -62,8 +62,8 @@ class DBMock {
 
 class SchemaMock {}
 
-const createMongooseMock = () => {
-  const db = new DBMock();
+const createMongooseMock = fixtures => {
+  const db = new DBMock(fixtures);
   const connect = () => db;
   const model = name => createModelMock(db, name);
 

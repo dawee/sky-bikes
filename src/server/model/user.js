@@ -1,10 +1,10 @@
 const createUserModel = mongoose => {
   const schema = new mongoose.Schema({
-    email: 'string',
-    uuid: 'string'
+    email: String,
+    uuid: String
   });
 
-  return mongoose.model('User', schema);
+  return mongoose.model('user', schema);
 };
 
 module.exports = createUserModel;
