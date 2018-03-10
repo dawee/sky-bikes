@@ -1,9 +1,20 @@
-const component = () => {
-  const element = document.createElement('div');
+import renderLoginForm from './component/login-form';
 
-  element.innerHTML = 'Sky bikes';
+const consumeTemplates = () => {
+  const nodes = document.querySelectorAll('[data-type="template"]');
 
-  return element;
+  return Array.prototype.slice.call(nodes).reduce((map, node) => {
+    document.body.removeChild(node);
+
+    return map.set(node.getAttribute('data-name'), node);
+  }, new Map());
 };
 
-document.body.appendChild(component());
+const root = () => {
+  const templates = consumeTemplates();
+  const loginForm = renderLoginForm(templates);
+
+  return loginForm({placeholder: 'example: my.email@gmail.com'});
+};
+
+document.body.appendChild(root());

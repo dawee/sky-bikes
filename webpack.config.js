@@ -26,7 +26,8 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
-      title: 'Development'
+      title: 'Sky Bikes',
+      template: 'src/app/index.html'
     })
   ],
   output: {
