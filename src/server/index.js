@@ -19,4 +19,4 @@ const createServer = mongoose => {
   return server;
 };
 
-module.exports = { createServer };
+module.exports = createServer;

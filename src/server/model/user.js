@@ -1,4 +1,4 @@
-const createUserModel = module.exports = mongoose => {
+const createUserModel = mongoose => {
   const schema = new mongoose.Schema({
     email: 'string',
     uuid: 'string'
@@ -6,3 +6,5 @@ const createUserModel = module.exports = mongoose => {
 
   return mongoose.model('User', schema);
 };
+
+module.exports = createUserModel;

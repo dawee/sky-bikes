@@ -1,18 +1,29 @@
 const createModelMock = (db, name) => {
   let idCounter = 0;
 
-  return class {
-    constructor(data) {
-      this.data = { _id: idCounter, ...data };
-      idCounter++;
+  return class ModelMock {
+    static findOne(filter) {
+      const document = db.findOneDocument(name, filter);
+
+      return Promise.resolve(document ? new ModelMock(document) : null);
+    }
+
+    constructor(document) {
+      this.document = document;
     }
 
     toObject() {
-      return this.data;
+      return this.document;
     }
 
     save() {
-      return Promise.resolve(db.saveDocument(name, this.data._id, this.data));
+      const document = this.document._id
+        ? this.document
+        : { _id: idCounter++, ...this.document };
+
+      return Promise.resolve(
+        db.saveDocument(name, this.document._id, document)
+      );
     }
   };
 };
@@ -20,6 +31,24 @@ const createModelMock = (db, name) => {
 class DBMock {
   constructor() {
     this.documents = {};
+  }
+
+  findDocument(name, predicate) {
+    if (!this.documents[name]) {
+      return null;
+    }
+
+    const foundId = Object.keys(this.documents[name]).find(id =>
+      predicate(this.documents[name][id])
+    );
+
+    return this.documents[name][foundId];
+  }
+
+  findOneDocument(name, filter) {
+    return this.findDocument(name, document =>
+      Object.keys(filter).every(key => document[key] === filter[key])
+    );
   }
 
   saveDocument(name, id, data) {
@@ -38,7 +67,7 @@ const createMongooseMock = () => {
   const connect = () => db;
   const model = name => createModelMock(db, name);
 
-  return {connect, model, Schema: SchemaMock};
+  return { connect, model, Schema: SchemaMock };
 };
 
-module.exports = { createMongooseMock };
+module.exports = createMongooseMock;
