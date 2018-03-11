@@ -11,23 +11,23 @@ const reservationAPI = require('./api/reservation');
 const sessionAPI = require('./api/session');
 const stationAPI = require('./api/station');
 
-const createStation = async () => {
-  return new Station({
-    slot0: await createBike(Bike, '#9400D3'),
-    slot1: await createBike(Bike, '#4B0082'),
-    slot2: await createBike(Bike, '#0000FF'),
-    slot3: await createBike(Bike, '#00FF00'),
-    slot4: await createBike(Bike, '#FFFF00'),
-    slot5: await createBike(Bike, '#FF7F00'),
-    slot6: await createBike(Bike, '#FF0000')
-  }).save();
+const createStation = async name => {
+  const station = await new Station({ name, capacity: 10 }).save();
+
+  await createBike({ color: '#9400D3', link: { station, slot: 0 } }),
+    await createBike({ color: '#4B0082', link: { station, slot: 1 } }),
+    await createBike({ color: '#0000FF', link: { station, slot: 2 } }),
+    await createBike({ color: '#00FF00', link: { station, slot: 3 } }),
+    await createBike({ color: '#FFFF00', link: { station, slot: 4 } }),
+    await createBike({ color: '#FF7F00', link: { station, slot: 5 } }),
+    await createBike({ color: '#FF0000', link: { station, slot: 6 } });
 };
 
 const createInitialDocuments = async () =>
   Promise.all([
-    createStation(),
-    createStation(),
-    createStation(),
+    createStation('Brooklyn'),
+    createStation('Manhattan'),
+    createStation('Broadway'),
     new User({ uuid: hat(), email: 'admin@skybikes.com', role: 'admin' }).save()
   ]);
 

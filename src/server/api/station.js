@@ -1,28 +1,29 @@
-const listAllStation = context => (req, res) => {
-  const { Station } = context;
+const range = n => Array.apply(null, { length: n }).map(Function.call, Number);
 
-  Station.find()
-    .populate([
-      'slot0',
-      'slot1',
-      'slot2',
-      'slot3',
-      'slot4',
-      'slot5',
-      'slot6',
-      'slot7',
-      'slot8',
-      'slot9'
-    ])
-    .exec()
-    .then(stations =>
-      res
-        .status(200)
-        .send({
-          stations: stations.map(station => station.toObject())
-        })
-        .end()
-    );
+const listAllStation = context => async (req, res) => {
+  const { Bike, Station } = context;
+  const stations = await Promise.all(
+    (await Station.find()).map(async station => {
+      const fed = await Promise.all(
+        range(10).map(async slot => ({
+          slot,
+          bike: await Bike.findOne()
+            .where('link.station', station)
+            .where('link.slot', slot)
+        }))
+      );
+
+      return fed.reduce(
+        (formated, { slot, bike }) => ({ ...formated, [`slot${slot}`]: bike }),
+        {}
+      );
+    })
+  );
+
+  return res
+    .status(200)
+    .send({ stations })
+    .end();
 };
 
 module.exports = {

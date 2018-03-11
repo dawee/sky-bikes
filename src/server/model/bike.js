@@ -3,16 +3,19 @@ const mongoose = require('mongoose');
 
 const schema = new mongoose.Schema({
   uuid: String,
-  reserved: Boolean,
-  color: String
+  color: String,
+  link: {
+    station: { type: mongoose.Schema.Types.ObjectId, ref: 'station' },
+    slot: Number
+  },
+  renter: { type: mongoose.Schema.Types.ObjectId, ref: 'user' }
 });
 
 const Bike = mongoose.model('bike', schema);
 
-const createBike = (Bike, color) =>
+const createBike = data =>
   new Bike({
-    color,
-    reserved: false,
+    ...data,
     uuid: hat()
   }).save();
 

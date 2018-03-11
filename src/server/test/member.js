@@ -14,7 +14,9 @@ test('should create a session using his email address', t =>
 test('should reserve a bike using a bike UUID if has valid session', t =>
   createContext(
     async ({ Bike, post }) => {
-      const bike = await Bike.findOne({ reserved: false });
+      const bike = await Bike.findOne()
+        .where('link.station')
+        .ne(null);
       const res = await post('/api/reservation', { bike: bike.toObject() });
 
       t.is(res.status, 200);
@@ -27,7 +29,9 @@ test('should reserve a bike using a bike UUID if has valid session', t =>
 
 test('should receive a 403 error if trying to reserve a bike without valid session', t =>
   createContext(async ({ Bike, post }) => {
-    const bike = await Bike.findOne({ reserved: false });
+    const bike = await Bike.findOne()
+      .where('link.station')
+      .ne(null);
     const res = await post('/api/reservation', { bike: bike.toObject() });
 
     t.is(res.status, 403);
