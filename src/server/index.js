@@ -73,6 +73,18 @@ const createServer = async (mongoose, middlewares = []) => {
   server.post('/api/session', sessionAPI.post(context));
   server.get('/api/station/all', stationAPI.all(context));
 
+  server.use((req, res, next) => {
+    if (
+      req.path !== '/' &&
+      !req.path.startsWith('/api') &&
+      !req.path.match(/^.*\..*$/)
+    ) {
+      return res.redirect('/');
+    }
+
+    next();
+  });
+
   return server;
 };
 

@@ -9,6 +9,10 @@ const pages = {
 const updateState = (dispatch, getState) => (state = {}, action) => {
   switch (action.type) {
     case 'navigate':
+      if (state.currentPage !== action.page) {
+        history.pushState(null, null, action.page);
+      }
+
       return {
         ...state,
         currentPage: action.page,
