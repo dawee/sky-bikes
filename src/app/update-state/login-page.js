@@ -3,7 +3,7 @@ import * as service from '../service';
 
 const updateLoginFormEmail = (
   state = {
-    placeholder: 'example: my.email@gmail.com',
+    placeholder: 'Enter your email',
     value: '',
     onInput: event =>
       dispatch({
@@ -41,7 +41,7 @@ const updateLoginForm = (
 });
 
 const updateLoginPage = (
-  state = { title: 'Sky Bikes' },
+  state = { title: 'Sky Bikes!' },
   action,
   dispatch,
   getState

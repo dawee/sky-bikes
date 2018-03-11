@@ -30,7 +30,7 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
-      title: 'Sky Bikes',
+      title: 'Sky Bikes!',
       template: 'src/app/index.html'
     })
   ],

@@ -1,16 +1,22 @@
-const updateRegisterFirstName = (state = {}) => ({
+const updateRegisterFirstName = (
+  state = { placeholder: 'Enter your first name' }
+) => ({
   ...state
 });
 
-const updateRegisterLastName = (state = {}) => ({
+const updateRegisterLastName = (
+  state = { placeholder: 'Enter your last name' }
+) => ({
   ...state
 });
 
-const updateRegisterEmergencyPhoneNumber = (state = {}) => ({
+const updateRegisterEmergencyPhoneNumber = (
+  state = { placeholder: 'Enter your emergency phone number' }
+) => ({
   ...state
 });
 
-const updateRegisterEmail = (state = {}) => ({
+const updateRegisterEmail = (state = { placeholder: 'Enter your email' }) => ({
   ...state
 });
 
@@ -45,7 +51,7 @@ const updateRegisterForm = (
 });
 
 const updateRegisterPage = (
-  state = { title: 'Sky Bikes' },
+  state = { title: 'Sky Bikes!' },
   action,
   dispatch,
   getState
