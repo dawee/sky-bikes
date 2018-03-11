@@ -2,13 +2,12 @@
 
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
-const mongoose = require('mongoose');
 const webpackConfig = require('../webpack.config.js');
 const createServer = require('../src/server')
 
 const webpackCompiler = webpack(webpackConfig);
 
-createServer(mongoose).then(server => {
+createServer('mongodb://localhost/skybikes').then(server => {
   server.use(webpackDevMiddleware(webpackCompiler, {
     publicPath: webpackConfig.output.publicPath
   }));

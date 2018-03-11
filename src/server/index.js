@@ -2,17 +2,16 @@ const hat = require('hat');
 const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const { createUserModel } = require('./model/user');
-const { createBikeModel, createBike } = require('./model/bike');
-const { createStationModel } = require('./model/station');
+const mongoose = require('mongoose');
+const { User } = require('./model/user');
+const { Bike, createBike } = require('./model/bike');
+const { Station } = require('./model/station');
 const memberAPI = require('./api/member');
 const reservationAPI = require('./api/reservation');
 const sessionAPI = require('./api/session');
 const stationAPI = require('./api/station');
 
-const createStation = async context => {
-  const { Bike, Station } = context;
-
+const createStation = async () => {
   return new Station({
     slot0: await createBike(Bike, '#9400D3'),
     slot1: await createBike(Bike, '#4B0082'),
@@ -24,32 +23,28 @@ const createStation = async context => {
   }).save();
 };
 
-const createInitialDocuments = async context => {
-  const { User } = context;
-
-  return Promise.all([
-    createStation(context),
-    createStation(context),
-    createStation(context),
+const createInitialDocuments = async () =>
+  Promise.all([
+    createStation(),
+    createStation(),
+    createStation(),
     new User({ uuid: hat(), email: 'admin@skybikes.com', role: 'admin' }).save()
   ]);
-};
 
-const initializeDB = async context => {
-  const { Station } = context;
+const initializeDB = async () => {
   const station = await Station.findOne();
 
-  return !station && createInitialDocuments(context);
+  return !station && createInitialDocuments();
 };
 
-const createServer = async (mongoose, middlewares = []) => {
-  const db = mongoose.connect('mongodb://localhost/skybikes');
+const createServer = async (dbURI, middlewares = []) => {
+  const db = mongoose.connect(dbURI);
   const server = express();
   const context = {
     db,
-    Bike: createBikeModel(mongoose),
-    Station: createStationModel(mongoose),
-    User: createUserModel(mongoose)
+    Bike,
+    Station,
+    User
   };
 
   await initializeDB(context);

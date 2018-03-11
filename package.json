@@ -8,7 +8,7 @@
     "build": "webpack",
     "start": "node ./bin/skybikes.com",
     "lint": "eslint --fix src",
-    "test": "ava"
+    "test": "ava --serial"
   },
   "author": "dawee (David Corticchiato) <david.corticchiato@gmail.com>",
   "devDependencies": {
@@ -46,6 +46,7 @@
   "ava": {
     "files": [
       "src/**/test/*.js"
-    ]
+    ],
+    "concurrency": 0
   }
 }

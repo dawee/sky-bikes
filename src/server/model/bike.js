@@ -1,14 +1,13 @@
 const hat = require('hat');
+const mongoose = require('mongoose');
 
-const createBikeModel = mongoose => {
-  const schema = new mongoose.Schema({
-    uuid: String,
-    reserved: Boolean,
-    color: String
-  });
+const schema = new mongoose.Schema({
+  uuid: String,
+  reserved: Boolean,
+  color: String
+});
 
-  return mongoose.model('bike', schema);
-};
+const Bike = mongoose.model('bike', schema);
 
 const createBike = (Bike, color) =>
   new Bike({
@@ -17,4 +16,4 @@ const createBike = (Bike, color) =>
     uuid: hat()
   }).save();
 
-module.exports = { createBike, createBikeModel };
+module.exports = { createBike, Bike };
