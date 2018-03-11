@@ -54,6 +54,18 @@ const createServer = async (mongoose, middlewares = []) => {
 
   await initializeDB(context);
 
+  server.use((req, res, next) => {
+    if (
+      req.url !== '/' &&
+      !req.url.startsWith('/api') &&
+      !req.url.match(/^.*\..*$/)
+    ) {
+      req.url = '/';
+    }
+
+    next();
+  });
+
   server.use(
     session({
       secret: 'Hi Ubi Club dev team',
@@ -72,18 +84,6 @@ const createServer = async (mongoose, middlewares = []) => {
   server.post('/api/reservation', reservationAPI.post(context));
   server.post('/api/session', sessionAPI.post(context));
   server.get('/api/station/all', stationAPI.all(context));
-
-  server.use((req, res, next) => {
-    if (
-      req.path !== '/' &&
-      !req.path.startsWith('/api') &&
-      !req.path.match(/^.*\..*$/)
-    ) {
-      return res.redirect('/');
-    }
-
-    next();
-  });
 
   return server;
 };
