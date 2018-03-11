@@ -12,11 +12,6 @@ const render = templates => (props, node) => {
 
   Object.keys(slots).forEach(slotId => {
     const slot = slots[slotId];
-
-    if (!slot) {
-      return;
-    }
-
     const slotNode = node.querySelector(`.${slotId}`);
 
     if (slotNode) {

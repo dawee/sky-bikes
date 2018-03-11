@@ -7,8 +7,16 @@ const render = () => (props, node) => {
 
   node.classList.add('slot');
   node.classList.add(slotId);
-  button.textContent = reserve.title;
-  bike.style.backgroundColor = color;
+
+  if (color) {
+    node.classList.remove('empty');
+    button.textContent = reserve.title;
+    bike.style.backgroundColor = color;
+  } else {
+    button.textContent = 'Empty slot';
+    node.classList.add('empty');
+    bike.style.backgroundColor = null;
+  }
 
   return node;
 };

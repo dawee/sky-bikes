@@ -28,6 +28,12 @@
   opacity: 0.3;
 }
 
+.slot.empty  .bike::after {
+  stroke-width: 0;
+  border: none;
+}
+
+
 .slot .bike svg.image,
 .slot .bike svg.overlay {
   position: absolute;
@@ -47,17 +53,39 @@
   stroke-width: 2px;
 }
 
+.slot.empty .bike svg.image {
+  fill: #c8d6e5;
+}
+
+.slot.empty .bike svg.overlay {
+  display: none;
+}
+
 .slot button {
-  background-color: #222f3e;
-  color: white;
+  box-sizing: border-box;
+  color: #576574;
   padding: 0.5em;
   font-size: 1em;
   border-radius: 0.25em;
   cursor: pointer;
   transition: all 0.3s;
+  width: 8em;
+}
+
+.slot button:active,
+.slot button:focus {
+  outline: none;
+}
+
+.slot.empty button,
+.slot.empty button:hover {
+  color: #c8d6e5;
+  background-color: white;
+  cursor: inherit;
+  border-width: 0;
 }
 
 .slot button:hover {
-  color: #222f3e;
-  background-color: white;
+  background-color: #576574;
+  color: white;
 }
