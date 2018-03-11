@@ -42,7 +42,7 @@ const createRootNode = () => {
       setTimeout(() => {
         state = updateAndDispatch(state, action);
 
-        updateRoot(state);
+        updateRoot(state, rootNode);
         resolve(action);
 
         // eslint-disable-next-line no-undef

@@ -25,4 +25,4 @@ export const getAllStations = () =>
       Accept: 'application/json',
       'Content-Type': 'application/json'
     }
-  });
+  }).then(res => res.json().then(({ stations }) => stations));

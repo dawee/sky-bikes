@@ -2,6 +2,7 @@ const hat = require('hat');
 
 const createBikeModel = mongoose => {
   const schema = new mongoose.Schema({
+    uuid: String,
     reserved: Boolean,
     color: String
   });

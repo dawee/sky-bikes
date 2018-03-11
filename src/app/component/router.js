@@ -13,7 +13,7 @@ const render = templates => {
   let pageNode = null;
 
   return (props, node) => {
-    const { currentPage, page } = props;
+    const { currentPage, page, onOpenPage } = props;
 
     if (lastPage && currentPage !== lastPage) {
       node.removeChild(pageNode);
@@ -26,6 +26,7 @@ const render = templates => {
 
     if (currentPage && currentPage !== lastPage) {
       node.appendChild(pageNode);
+      onOpenPage(currentPage);
     }
 
     lastPage = currentPage;
@@ -34,7 +35,10 @@ const render = templates => {
   };
 };
 
-const renderRouter = templates => (props, node) =>
-  render(templates)(props, node || document.createElement('div'));
+const renderRouter = templates => {
+  const update = render(templates);
+
+  return (props, node) => update(props, node || document.createElement('div'));
+};
 
 export default renderRouter;

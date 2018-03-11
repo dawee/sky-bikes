@@ -1,55 +1,34 @@
-const updateStationPage = () => () => ({
-  stations: [
-    {
-      slots: {
-        slot0: {
-          color: '#9400D3',
-          reserve: {
-            title: 'Book this bike'
-          }
-        },
-        slot1: {
-          color: '#4B0082',
-          reserve: {
-            title: 'Book this bike'
-          }
-        },
-        slot2: {
-          color: '#0000FF',
-          reserve: {
-            title: 'Book this bike'
-          }
-        },
-        slot3: {
-          color: '#00FF00',
-          reserve: {
-            title: 'Book this bike'
-          }
-        },
-        slot4: {
-          color: '#FFFF00',
-          reserve: {
-            title: 'Book this bike'
-          }
-        },
-        slot5: {
-          color: '#FF7F00',
-          reserve: {
-            title: 'Book this bike'
-          }
-        },
-        slot6: {
-          color: '#FF0000',
-          reserve: {
-            title: 'Book this bike'
-          }
-        },
-        slot7: null,
-        slot8: null,
-        slot9: null
-      }
+const formatStation = station => ({
+  ...station,
+  slots: Object.keys(station).reduce((slots, slotId) => {
+    if (!slotId.startsWith('slot')) {
+      return slots;
     }
-  ]
+    return {
+      ...slots,
+      [slotId]: {
+        ...station[slotId],
+        reserve: {
+          title: 'Book this bike'
+        }
+      }
+    };
+  }, {})
 });
+
+const updateStationPage = () => (
+  state = { stations: [{ slots: {} }] },
+  action
+) => {
+  switch (action.type) {
+    case 'fetch-stations-success':
+      return {
+        ...state,
+        stations: action.stations.map(formatStation)
+      };
+    default:
+      return state;
+  }
+};
 
 export default updateStationPage;
