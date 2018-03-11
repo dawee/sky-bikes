@@ -1,20 +1,34 @@
-import renderLoginForm from './component/login-form';
+import renderLoginPage from './component/login-page';
+import './style.css';
 
 const consumeTemplates = () => {
   const nodes = document.querySelectorAll('[data-type="template"]');
 
   return Array.prototype.slice.call(nodes).reduce((map, node) => {
+    const templateName = node.getAttribute('data-template-name');
+
     document.body.removeChild(node);
 
-    return map.set(node.getAttribute('data-name'), node);
+    node.removeAttribute('data-type');
+    node.removeAttribute('data-template-name');
+
+    return map.set(templateName, node);
   }, new Map());
 };
 
 const root = () => {
   const templates = consumeTemplates();
-  const loginForm = renderLoginForm(templates);
+  const loginPage = renderLoginPage(templates);
 
-  return loginForm({placeholder: 'example: my.email@gmail.com'});
+  return loginPage({
+    title: 'Sky Bikes',
+    form: {
+      placeholder: 'example: my.email@gmail.com',
+      submit: {
+        title: 'Log in'
+      }
+    }
+  });
 };
 
 document.body.appendChild(root());

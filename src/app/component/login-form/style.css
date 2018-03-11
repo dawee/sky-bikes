@@ -1,0 +1,26 @@
+.login-form,
+.login-form > form {
+  display: flex;
+  flex-flow: column;
+}
+
+.login-form > form > input.email,
+.login-form > form > input.submit {
+  height: 3em;
+  margin-top: 0.5rem;
+  padding: 0.5em;
+  font-size: 1em;
+  text-align: center;
+  border-radius: 0.25em;
+}
+
+.login-form > form > input.email {
+  background-color: white;
+}
+
+.login-form > form > input.submit {
+  background-color: #ff9f43;
+  color: white;
+  user-select: no-select;
+  cursor: pointer;
+}
