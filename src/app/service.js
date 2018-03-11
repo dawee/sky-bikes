@@ -17,3 +17,12 @@ export const register = payload =>
       'Content-Type': 'application/json'
     }
   });
+
+export const getAllStations = () =>
+  fetch('/api/station/all', {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
+  });
