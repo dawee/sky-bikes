@@ -1,4 +1,4 @@
-import renderLoginPage from './component/login-page';
+import renderRouter from './component/router';
 import updateState from './update-state';
 import './style.css';
 
@@ -23,7 +23,7 @@ const createRootNode = () => {
   let updateRoot;
 
   const templates = consumeTemplates();
-  const loginPage = renderLoginPage(templates);
+  const router = renderRouter(templates);
 
   let state = {};
   const getState = () => state;
@@ -37,11 +37,16 @@ const createRootNode = () => {
       }, 0);
     });
 
-  state = updateState(state, { type: 'init' }, dispatch, getState);
+  state = updateState(
+    state,
+    { type: 'navigate', page: 'login' },
+    dispatch,
+    getState
+  );
 
-  const rootNode = loginPage(state);
+  const rootNode = router(state);
 
-  updateRoot = createUpdateRoot(loginPage, rootNode);
+  updateRoot = createUpdateRoot(router, rootNode);
 
   return rootNode;
 };
