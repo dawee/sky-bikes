@@ -1,0 +1,63 @@
+.slot {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 0.25em;
+  width: 18em;
+}
+
+.slot .bike {
+  position: relative;
+  overflow: hidden;
+  width: 4em;
+  height: 4em;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+.slot .bike::after {
+  display: block;
+  position: absolute;
+  content: '';
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: 2px solid black;
+  border-radius: 50%;
+  opacity: 0.3;
+}
+
+.slot .bike svg.image,
+.slot .bike svg.overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: center;
+  transform: translate(-50%, -50%);
+  display: block;
+  width: 3em;
+  border-radius: 50%;
+  fill: white;
+}
+
+.slot .bike svg.overlay {
+  stroke: black;
+  stroke-opacity: 0.4;
+  stroke-width: 2px;
+}
+
+.slot button {
+  background-color: #222f3e;
+  color: white;
+  padding: 0.5em;
+  font-size: 1em;
+  border-radius: 0.25em;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.slot button:hover {
+  color: #222f3e;
+  background-color: white;
+}

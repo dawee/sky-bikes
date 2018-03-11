@@ -1,0 +1,6 @@
+.slots {
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+  align-items: center;
+}

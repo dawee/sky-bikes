@@ -14,6 +14,7 @@ const consumeTemplates = () => {
 
     node.removeAttribute('data-type');
     node.removeAttribute('data-template-name');
+    node.removeAttribute('style');
 
     return map.set(templateName, node);
   }, new Map());
