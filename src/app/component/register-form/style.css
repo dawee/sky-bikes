@@ -1,0 +1,26 @@
+.register-form,
+.register-form > form {
+  display: flex;
+  flex-flow: column;
+}
+
+.register-form > form > input.email,
+.register-form > form > input.submit {
+  height: 3em;
+  margin-top: 0.5rem;
+  padding: 0.5em;
+  font-size: 1em;
+  text-align: center;
+  border-radius: 0.25em;
+}
+
+.register-form > form > input.email {
+  background-color: white;
+}
+
+.register-form > form > input.submit {
+  background-color: #ff9f43;
+  color: white;
+  user-select: no-select;
+  cursor: pointer;
+}

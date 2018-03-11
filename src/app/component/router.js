@@ -1,8 +1,10 @@
 import renderLoginPage from './login-page';
+import renderRegisterPage from './register-page';
 
 const render = templates => {
   const pages = {
-    login: renderLoginPage(templates)
+    login: renderLoginPage(templates),
+    register: renderRegisterPage(templates)
   };
 
   let lastPage = null;

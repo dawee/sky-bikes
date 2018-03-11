@@ -1,7 +1,9 @@
 import updateLoginPage from './login-page';
+import updateRegisterPage from './register-page';
 
 const pages = {
-  login: updateLoginPage
+  login: updateLoginPage,
+  register: updateRegisterPage
 };
 
 const updateState = (state = {}, action, dispatch, getState) => {

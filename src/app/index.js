@@ -39,7 +39,7 @@ const createRootNode = () => {
 
   state = updateState(
     state,
-    { type: 'navigate', page: 'login' },
+    { type: 'navigate', page: 'register' },
     dispatch,
     getState
   );
