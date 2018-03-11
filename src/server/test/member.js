@@ -5,7 +5,8 @@ const createContext = require('./helper/context');
 test('should create a session using his email address', async t => {
   const { User, post } = await createContext(justRegisteredMemberFixtures);
   const user = await User.findOne();
-  const res = await post('/api/session', { user: user.toObject() });
+  const { email } = user.toObject();
+  const res = await post('/api/session', { email });
 
   t.is(res.status, 200);
 });

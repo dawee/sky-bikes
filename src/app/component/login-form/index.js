@@ -1,26 +1,37 @@
 import './style.css';
 
 const render = () => {
-  let submitHandler = null;
+  const handlers = {};
+
+  const updateHandler = (name, node, eventName, handler) => {
+    if (handler === handlers[name]) {
+      return;
+    }
+
+    if (handlers[name]) {
+      node.removeEventListener(eventName, handlers[name]);
+    }
+
+    if (handler) {
+      node.addEventListener(eventName, handler);
+      handlers[name] = handler;
+    }
+  };
 
   return (props, node) => {
-    const { placeholder, submit } = props;
+    const { email, submit } = props;
     const formNode = node.querySelector('form');
     const emailNode = node.querySelector('.email');
     const submitNode = node.querySelector('.submit');
 
     node.classList.add('login-form');
-    emailNode.setAttribute('placeholder', placeholder);
+    emailNode.setAttribute('placeholder', email.placeholder);
+    emailNode.setAttribute('value', email.value);
     submitNode.setAttribute('value', submit.title);
 
-    if (submitHandler) {
-      formNode.removeEventListener('submit', submitHandler);
-    }
-
-    if (submit.handler) {
-      formNode.addEventListener('submit', submit.handler);
-      submitHandler = submit.handler;
-    }
+    updateHandler('formSubmit', formNode, 'submit', submit.handler);
+    updateHandler('emailInput', emailNode, 'input', email.onInput);
+    updateHandler('emailChange', emailNode, 'change', email.onChange);
 
     return node;
   };

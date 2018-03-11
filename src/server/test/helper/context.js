@@ -15,8 +15,9 @@ const createContext = async (fixtures, userToLog) => {
 
   if (userToLog) {
     const user = await User.findOne(userToLog);
+    const { email } = user.toObject();
 
-    await post('/api/session', { user: user.toObject() });
+    await post('/api/session', { email });
   }
 
   return { get, post, User, Bike, Station };

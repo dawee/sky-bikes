@@ -1,4 +1,5 @@
 import renderLoginPage from './component/login-page';
+import updateState from './update-state';
 import './style.css';
 
 const consumeTemplates = () => {
@@ -23,19 +24,20 @@ const createRootNode = () => {
 
   const templates = consumeTemplates();
   const loginPage = renderLoginPage(templates);
-  const state = {
-    title: 'Sky Bikes',
-    form: {
-      placeholder: 'example: my.email@gmail.com',
-      submit: {
-        title: 'Log in',
-        handler: event => {
-          event.preventDefault();
-          updateRoot({ ...state, title: 'Sky Bikes updated' });
-        }
-      }
-    }
-  };
+
+  let state = {};
+  const getState = () => state;
+
+  const dispatch = action =>
+    new Promise(resolve => {
+      setTimeout(() => {
+        state = updateState(state, action, dispatch, getState);
+        updateRoot(state);
+        resolve(action);
+      }, 0);
+    });
+
+  state = updateState(state, { type: 'init' }, dispatch, getState);
 
   const rootNode = loginPage(state);
 

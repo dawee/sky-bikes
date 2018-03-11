@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
-  entry: './src/app/index.js',
+  entry: ['whatwg-fetch', './src/app/index.js'],
   mode: 'development',
   devtool: 'inline-source-map',
   devServer: {
