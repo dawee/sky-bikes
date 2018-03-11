@@ -1,7 +1,7 @@
 import { getLoginFormEmail } from '../extract-state';
 import * as service from '../service';
 
-const updateLoginFormEmail = (
+const updateLoginFormEmail = dispatch => (
   state = {
     placeholder: 'Enter your email',
     value: '',
@@ -11,8 +11,7 @@ const updateLoginFormEmail = (
         value: event.target.value
       })
   },
-  action,
-  dispatch
+  action
 ) => {
   switch (action.type) {
     case 'login-form-email-update':
@@ -22,7 +21,7 @@ const updateLoginFormEmail = (
   }
 };
 
-const updateLoginForm = (
+const updateLoginForm = (dispatch, getState) => (
   state = {
     submit: {
       title: 'Log in',
@@ -32,22 +31,18 @@ const updateLoginForm = (
       }
     }
   },
-  action,
-  dispatch,
-  getState
+  action
 ) => ({
   ...state,
-  email: updateLoginFormEmail(state.email, action, dispatch, getState)
+  email: updateLoginFormEmail(dispatch, getState)(state.email, action)
 });
 
-const updateLoginPage = (
+const updateLoginPage = (dispatch, getState) => (
   state = { title: 'Sky Bikes!' },
-  action,
-  dispatch,
-  getState
+  action = {}
 ) => ({
   ...state,
-  form: updateLoginForm(state.form, action, dispatch, getState)
+  form: updateLoginForm(dispatch, getState)(state.form, action)
 });
 
 export default updateLoginPage;

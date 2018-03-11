@@ -18,7 +18,9 @@ const render = templates => {
       pageNode = null;
     }
 
-    pageNode = pages[currentPage](page, pageNode);
+    if (currentPage) {
+      pageNode = pages[currentPage](page, pageNode);
+    }
 
     if (currentPage && currentPage !== lastPage) {
       node.appendChild(pageNode);

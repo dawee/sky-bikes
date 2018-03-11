@@ -1,26 +1,46 @@
-const updateRegisterFirstName = (
-  state = { placeholder: 'Enter your first name' }
-) => ({
-  ...state
+const forwardInputValue = (actionType, dispatch) => event =>
+  dispatch({
+    type: actionType,
+    value: event.target.value
+  });
+
+const createInputUpdater = ({ placeholder, actionType }) => dispatch => (
+  state = {
+    placeholder,
+    onInput: forwardInputValue(actionType, dispatch),
+    value: ''
+  },
+  action
+) => {
+  switch (action.type) {
+    case actionType:
+      return { ...state, value: action.value };
+    default:
+      return state;
+  }
+};
+
+const updateRegisterEmail = createInputUpdater({
+  actionType: 'register-form-email-update',
+  placeholder: 'Enter your email'
 });
 
-const updateRegisterLastName = (
-  state = { placeholder: 'Enter your last name' }
-) => ({
-  ...state
+const updateRegisterFirstName = createInputUpdater({
+  actionType: 'register-form-first-name-update',
+  placeholder: 'Enter your first name'
 });
 
-const updateRegisterEmergencyPhoneNumber = (
-  state = { placeholder: 'Enter your emergency phone number' }
-) => ({
-  ...state
+const updateRegisterLastName = createInputUpdater({
+  actionType: 'register-form-last-name-update',
+  placeholder: 'Enter your last name'
 });
 
-const updateRegisterEmail = (state = { placeholder: 'Enter your email' }) => ({
-  ...state
+const updateRegisterEmergencyPhoneNumber = createInputUpdater({
+  actionType: 'register-form-phone-number-update',
+  placeholder: 'Enter your emergency phone number'
 });
 
-const updateRegisterForm = (
+const updateRegisterForm = (dispatch, getState) => (
   state = {
     submit: {
       title: 'Create an account',
@@ -29,35 +49,27 @@ const updateRegisterForm = (
       }
     }
   },
-  action,
-  dispatch,
-  getState
+  action
 ) => ({
   ...state,
-  firstName: updateRegisterFirstName(
+  firstName: updateRegisterFirstName(dispatch, getState)(
     state.firstName,
-    action,
-    dispatch,
-    getState
+    action
   ),
-  lastName: updateRegisterLastName(state.lastName, action, dispatch, getState),
-  emergencyPhoneNumber: updateRegisterEmergencyPhoneNumber(
+  lastName: updateRegisterLastName(dispatch, getState)(state.lastName, action),
+  emergencyPhoneNumber: updateRegisterEmergencyPhoneNumber(dispatch, getState)(
     state.emergencyPhoneNumber,
-    action,
-    dispatch,
-    getState
+    action
   ),
-  email: updateRegisterEmail(state.email, action, dispatch, getState)
+  email: updateRegisterEmail(dispatch, getState)(state.email, action)
 });
 
-const updateRegisterPage = (
+const updateRegisterPage = (dispatch, getState) => (
   state = { title: 'Sky Bikes!' },
-  action,
-  dispatch,
-  getState
+  action = {}
 ) => ({
   ...state,
-  form: updateRegisterForm(state.form, action, dispatch, getState)
+  form: updateRegisterForm(dispatch, getState)(state.form, action)
 });
 
 export default updateRegisterPage;

@@ -20,35 +20,36 @@ const consumeTemplates = () => {
 const createUpdateRoot = (root, node) => state => root(state, node);
 
 const createRootNode = () => {
+  let rootNode;
+  let state;
   let updateRoot;
+  let updateAndDispatch;
 
   const templates = consumeTemplates();
   const router = renderRouter(templates);
 
-  let state = {};
-  const getState = () => state;
-
   const dispatch = action =>
     new Promise(resolve => {
       setTimeout(() => {
-        state = updateState(state, action, dispatch, getState);
+        state = updateAndDispatch(state, action);
+
         updateRoot(state);
         resolve(action);
+
+        // eslint-disable-next-line no-undef
+        if (process.env.NODE_ENV === 'development') {
+          // eslint-disable-next-line no-console
+          console.log(`%c${action.type}`, 'color: #5f27cd', { action, state });
+        }
       }, 0);
     });
 
-  state = updateState(
-    state,
-    { type: 'navigate', page: 'register' },
-    dispatch,
-    getState
-  );
-
-  const rootNode = router(state);
-
+  updateAndDispatch = updateState(dispatch, () => state);
+  state = updateAndDispatch(state, { type: 'init' });
+  rootNode = router(state);
   updateRoot = createUpdateRoot(router, rootNode);
 
-  return rootNode;
+  return dispatch({ type: 'navigate', page: 'register' }).then(() => rootNode);
 };
 
-document.body.appendChild(createRootNode());
+createRootNode().then(rootNode => document.body.appendChild(rootNode));
