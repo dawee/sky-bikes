@@ -1,9 +1,11 @@
 import updateLoginPage from './login-page';
 import updateRegisterPage from './register-page';
+import updateStationPage from './station-page';
 
 const pages = {
   login: updateLoginPage,
-  register: updateRegisterPage
+  register: updateRegisterPage,
+  station: updateStationPage
 };
 
 const updateState = (dispatch, getState) => (state = {}, action) => {
