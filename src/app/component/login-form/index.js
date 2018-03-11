@@ -1,13 +1,29 @@
 import './style.css';
 
-const render = () => (props, node) => {
-  const { placeholder, submit } = props;
+const render = () => {
+  let submitHandler = null;
 
-  node.classList.add('login-form');
-  node.querySelector('.email').setAttribute('placeholder', placeholder);
-  node.querySelector('.submit').setAttribute('value', submit.title);
+  return (props, node) => {
+    const { placeholder, submit } = props;
+    const formNode = node.querySelector('form');
+    const emailNode = node.querySelector('.email');
+    const submitNode = node.querySelector('.submit');
 
-  return node;
+    node.classList.add('login-form');
+    emailNode.setAttribute('placeholder', placeholder);
+    submitNode.setAttribute('value', submit.title);
+
+    if (submitHandler) {
+      formNode.removeEventListener('submit', submitHandler);
+    }
+
+    if (submit.handler) {
+      formNode.addEventListener('submit', submit.handler);
+      submitHandler = submit.handler;
+    }
+
+    return node;
+  };
 };
 
 const renderLoginForm = templates => (props, node) =>

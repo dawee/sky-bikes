@@ -16,19 +16,32 @@ const consumeTemplates = () => {
   }, new Map());
 };
 
-const root = () => {
+const createUpdateRoot = (root, node) => state => root(state, node);
+
+const createRootNode = () => {
+  let updateRoot;
+
   const templates = consumeTemplates();
   const loginPage = renderLoginPage(templates);
-
-  return loginPage({
+  const state = {
     title: 'Sky Bikes',
     form: {
       placeholder: 'example: my.email@gmail.com',
       submit: {
-        title: 'Log in'
+        title: 'Log in',
+        handler: event => {
+          event.preventDefault();
+          updateRoot({ ...state, title: 'Sky Bikes updated' });
+        }
       }
     }
-  });
+  };
+
+  const rootNode = loginPage(state);
+
+  updateRoot = createUpdateRoot(loginPage, rootNode);
+
+  return rootNode;
 };
 
-document.body.appendChild(root());
+document.body.appendChild(createRootNode());
