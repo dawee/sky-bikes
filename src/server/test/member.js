@@ -17,7 +17,7 @@ test('should reserve a bike using a bike UUID if has valid session', t =>
       const bike = await Bike.findOne()
         .where('link.station')
         .ne(null);
-      const res = await post('/api/reservation', { bike: bike.toObject() });
+      const res = await post('/api/reservation', { uuid: bike.uuid });
 
       t.is(res.status, 200);
     },

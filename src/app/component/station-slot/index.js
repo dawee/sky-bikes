@@ -1,30 +1,38 @@
+import { createUpdateHandler } from '../../handler';
 import './style.css';
 
-const render = () => (props, node) => {
-  const { slotId, color, reserve } = props;
-  const bike = node.querySelector('.bike');
-  const button = node.querySelector('button');
+const render = () => {
+  const updateHandler = createUpdateHandler();
 
-  node.classList.add('slot');
-  node.classList.add(slotId);
+  return (props, node) => {
+    const { slotId, color, reserve } = props;
+    const bike = node.querySelector('.bike');
+    const button = node.querySelector('button');
 
-  if (color) {
-    node.classList.remove('empty');
-    button.textContent = reserve.title;
-    bike.style.backgroundColor = color;
-  } else {
-    button.textContent = 'Empty slot';
-    node.classList.add('empty');
-    bike.style.backgroundColor = null;
-  }
+    node.classList.add('slot');
+    node.classList.add(slotId);
 
-  return node;
+    if (color) {
+      node.classList.remove('empty');
+      button.textContent = reserve.title;
+      bike.style.backgroundColor = color;
+    } else {
+      button.textContent = 'Empty slot';
+      node.classList.add('empty');
+      bike.style.backgroundColor = null;
+    }
+
+    updateHandler('reserveClick', button, 'click', reserve.onClick);
+
+    return node;
+  };
 };
 
-const renderStationSlot = templates => (props, node) =>
-  render(templates)(
-    props,
-    node || templates.get('station-slot').cloneNode(true)
-  );
+const renderStationSlot = templates => {
+  const update = render(templates);
+
+  return (props, node) =>
+    update(props, node || templates.get('station-slot').cloneNode(true));
+};
 
 export default renderStationSlot;

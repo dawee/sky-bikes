@@ -1,8 +1,8 @@
 const createKeepSessionMiddleware = () => {
-  let session = null;
+  let sessionID = null;
 
   return (req, res, next) => {
-    req.session = session = session || req.session;
+    req.sessionID = sessionID = sessionID || req.sessionID;
     return next();
   };
 };

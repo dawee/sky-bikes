@@ -1,3 +1,5 @@
+import * as service from '../service';
+
 const formatStation = station => ({
   ...station,
   slots: Object.keys(station).reduce((slots, slotId) => {
@@ -9,7 +11,14 @@ const formatStation = station => ({
       [slotId]: {
         ...station[slotId],
         reserve: {
-          title: 'Book this bike'
+          title: 'Book this bike',
+          onClick: () => {
+            const bike = station[slotId];
+
+            if (bike) {
+              service.rentBike(bike);
+            }
+          }
         }
       }
     };

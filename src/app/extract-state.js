@@ -1,4 +1,4 @@
-export const getLoginFormEmail = state => state.form.email.value;
+export const getLoginFormEmail = state => state.page.form.email.value;
 
 export const getRegisterFormPayload = state => ({
   firstName: state.page.form.firstName.value,

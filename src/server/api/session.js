@@ -1,18 +1,17 @@
-const createSession = context => (req, res) => {
+const createSession = context => async (req, res) => {
   const { User } = context;
   const { email } = req.body;
 
-  User.findOne({ email }).then(user => {
-    if (!user) {
-      return res.status(403).end();
-    }
+  const user = await User.findOne({ email });
 
-    const { uuid } = user.toObject();
+  if (!user) {
+    return res.status(403).end();
+  }
 
-    req.session.userUUID = uuid;
+  user.sessionID = req.sessionID;
+  await user.save();
 
-    return res.status(200).end();
-  });
+  return res.status(200).end();
 };
 
 module.exports = {
