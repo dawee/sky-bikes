@@ -1,7 +1,18 @@
+import renderStation from '../station';
 import './style.css';
 
-const render = () => (props, node) => {
+const render = templates => (props, node) => {
+  const station = renderStation(templates);
+  const contentNode = node.querySelector('.content');
+  const stationNode = contentNode.querySelector('h1');
+
   node.classList.add('station-page');
+
+  if (stationNode) {
+    station(props.station, stationNode);
+  } else {
+    contentNode.appendChild(station(props.station));
+  }
 
   return node;
 };
