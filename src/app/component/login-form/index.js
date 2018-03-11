@@ -1,22 +1,8 @@
+import { createUpdateHandler } from '../../handler';
 import './style.css';
 
 const render = () => {
-  const handlers = {};
-
-  const updateHandler = (name, node, eventName, handler) => {
-    if (handler === handlers[name]) {
-      return;
-    }
-
-    if (handlers[name]) {
-      node.removeEventListener(eventName, handlers[name]);
-    }
-
-    if (handler) {
-      node.addEventListener(eventName, handler);
-      handlers[name] = handler;
-    }
-  };
+  const updateHandler = createUpdateHandler();
 
   return (props, node) => {
     const { email, submit } = props;
