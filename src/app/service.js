@@ -40,3 +40,13 @@ export const getAllStations = () =>
       'Content-Type': 'application/json'
     }
   }).then(res => res.json().then(({ stations }) => stations));
+
+export const getLoggedMember = () =>
+  fetch('/api/member/me', {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
+  }).then(res => res.json());

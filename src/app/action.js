@@ -1,5 +1,5 @@
 import { PAGES } from './update-state';
-import { getAllStations } from './service';
+import { getAllStations, getLoggedMember } from './service';
 
 export const loadPage = dispatch => page => {
   switch (page) {
@@ -20,9 +20,16 @@ export const navigate = (dispatch, getState) => page => {
       history.pushState(null, null, action.page);
     }
 
-    return action;
+    return loadPage(dispatch, getState)(page);
   });
 };
+
+export const protectedNavigate = (dispatch, getState) => page =>
+  getLoggedMember()
+    .then(member => dispatch({ type: 'fetch-member-success', member }))
+    .then(({ member }) => dispatch({ type: 'set-current-member', member }))
+    .then(() => navigate(dispatch, getState)(page))
+    .catch(() => navigate(dispatch, getState)('register'));
 
 export const bootApp = (dispatch, getState) => () => {
   const requestedRoute = location.pathname.match(/\/?(\w+)/);
@@ -35,5 +42,9 @@ export const bootApp = (dispatch, getState) => () => {
     return navigate(dispatch, getState)('register');
   }
 
-  return navigate(dispatch, getState)(requestedPage);
+  if (requestedPage === 'login' || requestedPage === 'register') {
+    return navigate(dispatch, getState)(requestedPage);
+  }
+
+  return protectedNavigate(dispatch, getState)(requestedPage);
 };

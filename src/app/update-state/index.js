@@ -1,4 +1,3 @@
-import { loadPage } from '../action';
 import updateLoginPage from './login-page';
 import updateRegisterPage from './register-page';
 import updateRentingPage from './renting-page';
@@ -13,10 +12,11 @@ export const PAGES = {
 
 const updateState = (dispatch, getState) => (
   state = {
-    onOpenPage: loadPage(dispatch, getState)
+    members: {}
   },
   action
 ) => {
+  const member = action.member;
   const updatePage = (page, action, pageState) =>
     PAGES[page](dispatch, getState)(pageState, action);
 
@@ -26,6 +26,16 @@ const updateState = (dispatch, getState) => (
         ...state,
         currentPage: action.page,
         page: updatePage(action.page, action)
+      };
+    case 'fetch-member-success':
+      return {
+        ...state,
+        members: { ...state.members, [member.uuid]: member }
+      };
+    case 'set-current-member':
+      return {
+        ...state,
+        currentMemberUUID: member.uuid
       };
     default:
       return state.currentPage

@@ -15,7 +15,7 @@ const render = templates => {
   let pageNode = null;
 
   return (props, node) => {
-    const { currentPage, page, onOpenPage } = props;
+    const { currentPage, page } = props;
 
     if (lastPage && currentPage !== lastPage) {
       node.removeChild(pageNode);
@@ -28,7 +28,6 @@ const render = templates => {
 
     if (currentPage && currentPage !== lastPage) {
       node.appendChild(pageNode);
-      onOpenPage(currentPage);
     }
 
     lastPage = currentPage;
