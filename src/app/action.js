@@ -1,16 +1,36 @@
 import { PAGES } from './update-state';
-import { getCurrentMember, getLoginFormEmail } from './extract-state';
-import { createSession, getAllStations, getLoggedMember } from './service';
+import {
+  getCurrentMember,
+  getLoginFormEmail,
+  getRegisterFormPayload
+} from './extract-state';
+import {
+  createSession,
+  getAllStations,
+  getLoggedMember,
+  register
+} from './service';
+
+export const openProfile = (dispatch, getState) => email => {
+  const doProtectedNavigate = protectedNavigate(dispatch, getState);
+
+  return createSession({ email }).then(() => doProtectedNavigate('renting'));
+};
 
 export const logIn = (dispatch, getState) => event => {
   const email = getLoginFormEmail(getState());
-  const doProtectedNavigate = protectedNavigate(dispatch, getState);
+  const doOpenProfile = openProfile(dispatch, getState);
 
-  if (event && event.preventDefault) {
-    event.preventDefault();
-  }
+  event.preventDefault();
+  return doOpenProfile(email);
+};
 
-  return createSession({ email }).then(() => doProtectedNavigate('renting'));
+export const createAccount = (dispatch, getState) => event => {
+  const payload = getRegisterFormPayload(getState());
+  const doOpenProfile = openProfile(dispatch, getState);
+
+  event.preventDefault();
+  return register(payload).then(() => doOpenProfile(payload.email));
 };
 
 export const loadPage = dispatch => page => {
@@ -67,7 +87,7 @@ export const bootApp = (dispatch, getState) => () => {
       : null;
 
   if (!requestedPage) {
-    return doNavigate('register');
+    return doProtectedNavigate('renting');
   }
 
   if (requestedPage === 'login' || requestedPage === 'register') {

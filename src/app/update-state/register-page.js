@@ -1,5 +1,4 @@
-import { getRegisterFormPayload } from '../extract-state';
-import * as service from '../service';
+import { createAccount } from '../action';
 
 const forwardInputValue = (actionType, dispatch) => event =>
   dispatch({
@@ -47,10 +46,7 @@ const updateRegisterForm = (dispatch, getState) => (
   state = {
     submit: {
       title: 'Create an account',
-      handler: event => {
-        event.preventDefault();
-        service.register(getRegisterFormPayload(getState()));
-      }
+      handler: createAccount(dispatch, getState)
     }
   },
   action
