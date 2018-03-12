@@ -1,11 +1,13 @@
 import renderLoginPage from './login-page';
 import renderRegisterPage from './register-page';
+import renderRentingPage from './renting-page';
 import renderStationPage from './station-page';
 
 const render = templates => {
   const pages = {
     login: renderLoginPage(templates),
     register: renderRegisterPage(templates),
+    renting: renderRentingPage(templates),
     station: renderStationPage(templates)
   };
 

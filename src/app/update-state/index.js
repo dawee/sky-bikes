@@ -1,11 +1,13 @@
 import * as service from '../service';
 import updateLoginPage from './login-page';
 import updateRegisterPage from './register-page';
+import updateRentingPage from './renting-page';
 import updateStationPage from './station-page';
 
 const pages = {
   login: updateLoginPage,
   register: updateRegisterPage,
+  renting: updateRentingPage,
   station: updateStationPage
 };
 
