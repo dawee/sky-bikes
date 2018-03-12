@@ -21,7 +21,12 @@ const makeReservation = context => async (req, res) => {
 
   bike.link.station = null;
   bike.renter = user;
+
   await bike.save();
+
+  user.lastRentStartDate = new Date();
+
+  await user.save();
 
   return res.status(200).end();
 };
