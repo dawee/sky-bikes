@@ -8,8 +8,15 @@ import {
   createSession,
   getAllStations,
   getLoggedMember,
-  register
+  register,
+  rentBike
 } from './service';
+
+export const tryToRentBike = (dispatch, getState) => bike => {
+  const doProtectedNavigate = protectedNavigate(dispatch, getState);
+
+  return rentBike(bike).then(() => doProtectedNavigate('renting'));
+};
 
 export const openProfile = (dispatch, getState) => email => {
   const doProtectedNavigate = protectedNavigate(dispatch, getState);

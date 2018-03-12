@@ -1,6 +1,6 @@
-import * as service from '../service';
+import { tryToRentBike } from '../action';
 
-const formatStation = station => ({
+const formatStation = (dispatch, getState) => station => ({
   ...station,
   slots: Object.keys(station).reduce((slots, slotId) => {
     if (!slotId.startsWith('slot')) {
@@ -12,20 +12,14 @@ const formatStation = station => ({
         ...station[slotId],
         rent: {
           title: 'Book this bike',
-          onClick: () => {
-            const bike = station[slotId];
-
-            if (bike) {
-              service.rentBike(bike);
-            }
-          }
+          onClick: () => tryToRentBike(dispatch, getState)(station[slotId])
         }
       }
     };
   }, {})
 });
 
-const updateStationPage = () => (
+const updateStationPage = (dispatch, getState) => (
   state = { stations: [{ slots: {} }] },
   action
 ) => {
@@ -33,7 +27,7 @@ const updateStationPage = () => (
     case 'fetch-stations-success':
       return {
         ...state,
-        stations: action.stations.map(formatStation)
+        stations: action.stations.map(formatStation(dispatch, getState))
       };
     default:
       return state;
