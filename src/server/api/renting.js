@@ -28,7 +28,10 @@ const makeRenting = context => async (req, res) => {
 
   await user.save();
 
-  return res.status(200).end();
+  return res
+    .status(200)
+    .send(bike.toObject())
+    .end();
 };
 
 module.exports = {

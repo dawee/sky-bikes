@@ -76,6 +76,7 @@ const createServer = async (dbURI, middlewares = []) => {
   server.use(bodyParser.json());
 
   server.post('/api/member', memberAPI.post(context));
+  server.get('/api/member/me', memberAPI.me(context));
   server.post('/api/renting', rentingAPI.post(context));
   server.post('/api/session', sessionAPI.post(context));
   server.get('/api/station/all', stationAPI.all(context));
