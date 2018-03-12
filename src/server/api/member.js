@@ -25,8 +25,9 @@ const registerMember = context => async (req, res) => {
 };
 
 const getLoggedMember = context => async (req, res) => {
-  const { User } = context;
+  const { Bike, User } = context;
   const user = await User.findOne({ sessionID: req.sessionID });
+  const bike = await Bike.findOne().where('renter', user);
 
   if (!user) {
     return res.status(403).end();
@@ -34,7 +35,10 @@ const getLoggedMember = context => async (req, res) => {
 
   return res
     .status(200)
-    .send(user.toObject({ virtuals: true }))
+    .send({
+      ...user.toObject({ virtuals: true }),
+      bike: bike ? bike.toObject() : null
+    })
     .end();
 };
 

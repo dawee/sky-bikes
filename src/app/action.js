@@ -25,7 +25,7 @@ export const openPreviousStation = (dispatch, getState) => () => {
 export const openNextStation = (dispatch, getState) => () => {
   const state = getState();
   const index =
-    state.page.currentStationIndex >= state.page.stations.length
+    state.page.currentStationIndex >= state.page.stations.length - 1
       ? 0
       : state.page.currentStationIndex + 1;
 
