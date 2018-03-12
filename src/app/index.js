@@ -2,7 +2,7 @@ import renderRouter from './component/router';
 import updateState from './update-state';
 import './style.css';
 
-const PAGES = ['register', 'login', 'reservation', 'station', 'admin'];
+const PAGES = ['register', 'login', 'renting', 'station', 'admin'];
 
 const consumeTemplates = () => {
   const nodes = document.querySelectorAll('[data-type="template"]');

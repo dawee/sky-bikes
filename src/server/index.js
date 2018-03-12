@@ -7,7 +7,7 @@ const { User } = require('./model/user');
 const { Bike, createBike } = require('./model/bike');
 const { Station } = require('./model/station');
 const memberAPI = require('./api/member');
-const reservationAPI = require('./api/reservation');
+const rentingAPI = require('./api/renting');
 const sessionAPI = require('./api/session');
 const stationAPI = require('./api/station');
 
@@ -76,7 +76,7 @@ const createServer = async (dbURI, middlewares = []) => {
   server.use(bodyParser.json());
 
   server.post('/api/member', memberAPI.post(context));
-  server.post('/api/reservation', reservationAPI.post(context));
+  server.post('/api/renting', rentingAPI.post(context));
   server.post('/api/session', sessionAPI.post(context));
   server.get('/api/station/all', stationAPI.all(context));
 

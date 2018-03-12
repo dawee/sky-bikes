@@ -17,7 +17,7 @@ test('should reserve a bike using a bike UUID if has valid session', t =>
       const bike = await Bike.findOne()
         .where('link.station')
         .ne(null);
-      const res = await post('/api/reservation', { uuid: bike.uuid });
+      const res = await post('/api/renting', { uuid: bike.uuid });
 
       t.is(res.status, 200);
     },
@@ -32,7 +32,7 @@ test('should receive a 403 error if trying to reserve a bike without valid sessi
     const bike = await Bike.findOne()
       .where('link.station')
       .ne(null);
-    const res = await post('/api/reservation', { bike: bike.toObject() });
+    const res = await post('/api/renting', { bike: bike.toObject() });
 
     t.is(res.status, 403);
   }, justRegisteredMemberFixtures));

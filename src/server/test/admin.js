@@ -1,7 +1,7 @@
 const test = require('ava');
 const createContext = require('./helper/context');
 
-test('should see all stations with their initial bycicles when no one made a reservation', t =>
+test('should see all stations with their initial bycicles when no one made a renting', t =>
   createContext(
     async ({ get }) => {
       const res = await get('/api/station/all');

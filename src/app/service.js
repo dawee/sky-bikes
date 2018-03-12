@@ -21,7 +21,7 @@ export const register = payload =>
   });
 
 export const rentBike = payload =>
-  fetch('/api/reservation', {
+  fetch('/api/renting', {
     method: 'POST',
     body: JSON.stringify(payload),
     credentials: 'include',

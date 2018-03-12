@@ -1,4 +1,4 @@
-const makeReservation = context => async (req, res) => {
+const makeRenting = context => async (req, res) => {
   const { User, Bike } = context;
   const { uuid } = req.body;
   const user = await User.findOne({ sessionID: req.sessionID });
@@ -32,5 +32,5 @@ const makeReservation = context => async (req, res) => {
 };
 
 module.exports = {
-  post: makeReservation
+  post: makeRenting
 };
