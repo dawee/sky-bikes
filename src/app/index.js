@@ -1,8 +1,7 @@
 import renderRouter from './component/router';
 import updateState from './update-state';
+import { bootApp } from './action';
 import './style.css';
-
-const PAGES = ['register', 'login', 'renting', 'station', 'admin'];
 
 const consumeTemplates = () => {
   const nodes = document.querySelectorAll('[data-type="template"]');
@@ -23,16 +22,11 @@ const consumeTemplates = () => {
 const createUpdateRoot = (root, node) => state => root(state, node);
 
 const createRootNode = () => {
+  let getState;
   let rootNode;
   let state;
   let updateRoot;
   let updateAndDispatch;
-
-  const requestedRoute = location.pathname.match(/\/?(\w+)/);
-  const initialPage =
-    PAGES.indexOf(requestedRoute && requestedRoute[1]) >= 0
-      ? requestedRoute[1]
-      : 'register';
 
   const templates = consumeTemplates();
   const router = renderRouter(templates);
@@ -53,12 +47,13 @@ const createRootNode = () => {
       }, 0);
     });
 
-  updateAndDispatch = updateState(dispatch, () => state);
+  getState = () => state;
+  updateAndDispatch = updateState(dispatch, getState);
   state = updateAndDispatch(state, { type: 'init' });
   rootNode = router(state);
   updateRoot = createUpdateRoot(router, rootNode);
 
-  return dispatch({ type: 'navigate', page: initialPage }).then(() => rootNode);
+  return bootApp(dispatch, getState)().then(() => rootNode);
 };
 
 createRootNode().then(rootNode => document.body.appendChild(rootNode));
