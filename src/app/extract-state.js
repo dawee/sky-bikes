@@ -6,3 +6,5 @@ export const getRegisterFormPayload = state => ({
   emergencyPhoneNumber: state.page.form.emergencyPhoneNumber.value,
   email: state.page.form.email.value
 });
+
+export const getCurrentMember = state => state.members[state.currentMemberUUID];

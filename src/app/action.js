@@ -1,4 +1,5 @@
 import { PAGES } from './update-state';
+import { getCurrentMember } from './extract-state';
 import { getAllStations, getLoggedMember } from './service';
 
 export const loadPage = dispatch => page => {
@@ -24,14 +25,30 @@ export const navigate = (dispatch, getState) => page => {
   });
 };
 
+export const conditionalNavigate = (dispatch, getState) => page => {
+  const doNavigate = navigate(dispatch, getState);
+  const member = getCurrentMember(getState());
+
+  switch (page) {
+    case 'renting':
+      return member.rentingHoursLeft === null
+        ? doNavigate('station')
+        : doNavigate('renting');
+    default:
+      return doNavigate(page);
+  }
+};
+
 export const protectedNavigate = (dispatch, getState) => page =>
   getLoggedMember()
     .then(member => dispatch({ type: 'fetch-member-success', member }))
     .then(({ member }) => dispatch({ type: 'set-current-member', member }))
-    .then(() => navigate(dispatch, getState)(page))
+    .then(() => conditionalNavigate(dispatch, getState)(page))
     .catch(() => navigate(dispatch, getState)('register'));
 
 export const bootApp = (dispatch, getState) => () => {
+  const doNavigate = navigate(dispatch, getState);
+  const doProtectedNavigate = protectedNavigate(dispatch, getState);
   const requestedRoute = location.pathname.match(/\/?(\w+)/);
   const requestedPage =
     Object.keys(PAGES).indexOf(requestedRoute && requestedRoute[1]) >= 0
@@ -39,12 +56,12 @@ export const bootApp = (dispatch, getState) => () => {
       : null;
 
   if (!requestedPage) {
-    return navigate(dispatch, getState)('register');
+    return doNavigate('register');
   }
 
   if (requestedPage === 'login' || requestedPage === 'register') {
-    return navigate(dispatch, getState)(requestedPage);
+    return doNavigate(requestedPage);
   }
 
-  return protectedNavigate(dispatch, getState)(requestedPage);
+  return doProtectedNavigate(requestedPage);
 };
