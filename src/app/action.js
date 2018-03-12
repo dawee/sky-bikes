@@ -12,12 +12,28 @@ export const loadPage = dispatch => page => {
   }
 };
 
-export const bootApp = dispatch => () => {
+export const navigate = (dispatch, getState) => page => {
+  const state = getState;
+
+  return dispatch({ type: 'navigate', page }).then(action => {
+    if (state.currentPage !== action.page) {
+      history.pushState(null, null, action.page);
+    }
+
+    return action;
+  });
+};
+
+export const bootApp = (dispatch, getState) => () => {
   const requestedRoute = location.pathname.match(/\/?(\w+)/);
-  const initialPage =
+  const requestedPage =
     Object.keys(PAGES).indexOf(requestedRoute && requestedRoute[1]) >= 0
       ? requestedRoute[1]
-      : 'register';
+      : null;
 
-  return dispatch({ type: 'navigate', page: initialPage });
+  if (!requestedPage) {
+    return navigate(dispatch, getState)('register');
+  }
+
+  return navigate(dispatch, getState)(requestedPage);
 };

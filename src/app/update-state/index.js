@@ -22,10 +22,6 @@ const updateState = (dispatch, getState) => (
 
   switch (action.type) {
     case 'navigate':
-      if (state.currentPage !== action.page) {
-        history.pushState(null, null, action.page);
-      }
-
       return {
         ...state,
         currentPage: action.page,
