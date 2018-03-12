@@ -1,24 +1,30 @@
+import { createUpdateHandler } from '../../handler';
 import './style.css';
 
-const render = () => (props, node) => {
-  const { bikeColor, rentingSentence, timeSentence, returnBike } = props;
-  const bikeNode = node.querySelector('.bike');
-  const rentingSentenceNode = node.querySelector('.renting-sentence');
-  const timeSentenceNode = node.querySelector('.time-sentence');
-  const returnBikeNode = node.querySelector('.return-bike');
+const render = () => {
+  const updateHandler = createUpdateHandler();
 
-  node.classList.add('renting');
-  rentingSentenceNode.textContent = rentingSentence;
+  return (props, node) => {
+    const { bikeColor, rentingSentence, timeSentence, returnBike } = props;
+    const bikeNode = node.querySelector('.bike');
+    const rentingSentenceNode = node.querySelector('.renting-sentence');
+    const timeSentenceNode = node.querySelector('.time-sentence');
+    const returnBikeNode = node.querySelector('.return-bike');
 
-  Object.keys(timeSentence).forEach(partName => {
-    timeSentenceNode.querySelector(`.${partName}`).textContent =
-      timeSentence[partName];
-  });
+    node.classList.add('renting');
+    rentingSentenceNode.textContent = rentingSentence;
 
-  bikeNode.style.fill = bikeColor;
-  returnBikeNode.textContent = returnBike.title;
+    Object.keys(timeSentence).forEach(partName => {
+      timeSentenceNode.querySelector(`.${partName}`).textContent =
+        timeSentence[partName];
+    });
 
-  return node;
+    bikeNode.style.fill = bikeColor;
+    returnBikeNode.textContent = returnBike.title;
+    updateHandler('returnClick', returnBikeNode, 'click', returnBike.handler);
+
+    return node;
+  };
 };
 
 const renderRenting = templates => {

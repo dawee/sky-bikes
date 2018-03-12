@@ -1,3 +1,4 @@
+import { protectedNavigate } from '../action';
 import { getCurrentMember } from '../extract-state';
 
 const digits = value => (`${value}`.length === 1 ? `0${value}` : `${value}`);
@@ -24,7 +25,8 @@ const updateRentingPage = (dispatch, getState) => () => {
         end: 'left to return it'
       },
       returnBike: {
-        title: 'Return this bike'
+        title: 'Return this bike',
+        handler: () => protectedNavigate(dispatch, getState)('station')
       }
     }
   };
