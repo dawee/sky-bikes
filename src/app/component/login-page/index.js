@@ -27,7 +27,11 @@ const render = templates => (props, node) => {
   return node;
 };
 
-const renderLoginPage = templates => (props, node) =>
-  render(templates)(props, node || templates.get('page').cloneNode(true));
+const renderLoginPage = templates => {
+  const update = render(templates);
+
+  return (props, node) =>
+    update(props, node || templates.get('page').cloneNode(true));
+};
 
 export default renderLoginPage;

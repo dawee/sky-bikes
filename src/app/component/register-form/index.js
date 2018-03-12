@@ -53,10 +53,10 @@ const render = () => {
   };
 };
 
-const renderRegisterForm = templates => (props, node) =>
-  render(templates)(
-    props,
-    node || templates.get('register-form').cloneNode(true)
-  );
+const renderRegisterForm = templates => {
+  const update = render(templates);
+  return (props, node) =>
+    update(props, node || templates.get('register-form').cloneNode(true));
+};
 
 export default renderRegisterForm;

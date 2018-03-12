@@ -23,7 +23,11 @@ const render = () => {
   };
 };
 
-const renderLoginForm = templates => (props, node) =>
-  render(templates)(props, node || templates.get('login-form').cloneNode(true));
+const renderLoginForm = templates => {
+  const update = render(templates);
+
+  return (props, node) =>
+    update(props, node || templates.get('login-form').cloneNode(true));
+};
 
 export default renderLoginForm;
