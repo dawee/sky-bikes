@@ -1,8 +1,24 @@
+import renderRenting from '../renting';
 import './style.css';
 
-const render = () => (props, node) => {
-  node.classList.add('renting-page');
-  return node;
+const render = templates => {
+  const rentingComponent = renderRenting(templates);
+
+  return (props, node) => {
+    const { renting } = props;
+    const contentNode = node.querySelector('.content');
+    const rentingNode = contentNode.querySelector('.renting');
+
+    node.classList.add('renting-page');
+
+    if (rentingNode) {
+      rentingComponent(renting, rentingNode);
+    } else {
+      contentNode.appendChild(rentingComponent(renting));
+    }
+
+    return node;
+  };
 };
 
 const renderRentingPage = templates => {
