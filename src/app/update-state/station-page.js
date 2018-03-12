@@ -10,7 +10,7 @@ const formatStation = station => ({
       ...slots,
       [slotId]: {
         ...station[slotId],
-        reserve: {
+        rent: {
           title: 'Book this bike',
           onClick: () => {
             const bike = station[slotId];

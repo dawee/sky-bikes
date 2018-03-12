@@ -5,7 +5,7 @@ const render = () => {
   const updateHandler = createUpdateHandler();
 
   return (props, node) => {
-    const { slotId, color, reserve } = props;
+    const { slotId, color, rent } = props;
     const bike = node.querySelector('.bike');
     const button = node.querySelector('button');
 
@@ -14,7 +14,7 @@ const render = () => {
 
     if (color) {
       node.classList.remove('empty');
-      button.textContent = reserve.title;
+      button.textContent = rent.title;
       bike.style.backgroundColor = color;
     } else {
       button.textContent = 'Empty slot';
@@ -22,7 +22,7 @@ const render = () => {
       bike.style.backgroundColor = null;
     }
 
-    updateHandler('reserveClick', button, 'click', reserve.onClick);
+    updateHandler('reserveClick', button, 'click', rent.onClick);
 
     return node;
   };
