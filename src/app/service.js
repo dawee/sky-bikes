@@ -31,6 +31,17 @@ export const rentBike = payload =>
     }
   });
 
+export const sendBikeToStation = (stationUUID, payload) =>
+  fetch(`/api/station/${stationUUID}`, {
+    method: 'PATCH',
+    body: JSON.stringify(payload),
+    credentials: 'include',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
+  });
+
 export const getAllStations = () =>
   fetch('/api/station/all', {
     method: 'GET',

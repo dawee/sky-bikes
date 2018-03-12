@@ -1,7 +1,16 @@
 import { hasCurrentMemberRent } from '../extract-state';
-import { tryToRentBike, openPreviousStation, openNextStation } from '../action';
+import {
+  tryToRentBike,
+  openPreviousStation,
+  openNextStation,
+  returnBike
+} from '../action';
 
-const formatStationSlot = (dispatch, getState) => slot => {
+const formatStationSlot = (dispatch, getState) => (
+  station,
+  slotIndex,
+  slot
+) => {
   let title;
   let onClick;
   let disabled = false;
@@ -17,6 +26,7 @@ const formatStationSlot = (dispatch, getState) => slot => {
     disabled = true;
   } else if (hasBike && empty) {
     title = 'Return your bike here';
+    onClick = () => returnBike(dispatch, getState)(station.uuid, slotIndex);
   } else {
     title = 'This slot is taken';
     disabled = true;
@@ -46,7 +56,11 @@ const formatStation = (dispatch, getState) => station => ({
 
     return {
       ...slots,
-      [slotId]: doFormatStationSlot(station[slotId])
+      [slotId]: doFormatStationSlot(
+        station,
+        Number(slotId.match(/^slot([0-9]+)$/)[1]),
+        station[slotId]
+      )
     };
   }, {})
 });

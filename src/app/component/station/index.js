@@ -21,12 +21,12 @@ const render = templates => {
     node.classList.add('station');
     nameNode.textContent = name;
 
-    Object.keys(slots).forEach(slotId => {
+    Object.keys(slots).forEach((slotId, slotIndex) => {
       const slot = slots[slotId];
       const slotNode = node.querySelector(`.${slotId}`);
 
       if (slotNode) {
-        stationSlot({ ...slot, slotId }, slotNode);
+        stationSlot({ ...slot, slotId, slotIndex }, slotNode);
       } else {
         slotsNode.appendChild(stationSlot({ ...slot, slotId }));
       }

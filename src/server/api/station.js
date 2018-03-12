@@ -15,7 +15,7 @@ const listAllStation = context => async (req, res) => {
 
       return fed.reduce(
         (formated, { slot, bike }) => ({ ...formated, [`slot${slot}`]: bike }),
-        { name: station.name }
+        { name: station.name, uuid: station.uuid }
       );
     })
   );
@@ -38,9 +38,14 @@ const returnBike = context => async (req, res) => {
   }
 
   const station = await Station.findOne({ uuid });
+
+  if (!station) {
+    return res.status(404).end();
+  }
+
   const bike = await Bike.findOne({ uuid: bikeUUID });
 
-  if (!station || !bike || bike.link.station !== null) {
+  if (!bike || bike.link.station !== null) {
     return res.status(409).end();
   }
 

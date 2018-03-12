@@ -9,8 +9,19 @@ import {
   getAllStations,
   getLoggedMember,
   register,
-  rentBike
+  rentBike,
+  sendBikeToStation
 } from './service';
+
+export const returnBike = (dispatch, getState) => (stationUUID, slotIndex) => {
+  const { bike } = getCurrentMember(getState());
+
+  return sendBikeToStation(stationUUID, {
+    bike: { slot: slotIndex, uuid: bike.uuid }
+  })
+    .then(() => updateCurrentMember(dispatch, getState)())
+    .then(() => updateAllStations(dispatch, getState)());
+};
 
 export const openPreviousStation = (dispatch, getState) => () => {
   const state = getState();
@@ -60,12 +71,15 @@ export const createAccount = (dispatch, getState) => event => {
   return register(payload).then(() => doOpenProfile(payload.email));
 };
 
-export const loadPage = dispatch => page => {
+export const updateAllStations = dispatch => () =>
+  getAllStations().then(stations =>
+    dispatch({ type: 'fetch-stations-success', stations })
+  );
+
+export const loadPage = (dispatch, getState) => page => {
   switch (page) {
     case 'station':
-      return getAllStations().then(stations =>
-        dispatch({ type: 'fetch-stations-success', stations })
-      );
+      return updateAllStations(dispatch, getState)();
     default:
       return Promise.resolve(null);
   }
@@ -97,10 +111,13 @@ export const conditionalNavigate = (dispatch, getState) => page => {
   }
 };
 
-export const protectedNavigate = (dispatch, getState) => page =>
+export const updateCurrentMember = dispatch => () =>
   getLoggedMember()
     .then(member => dispatch({ type: 'fetch-member-success', member }))
-    .then(({ member }) => dispatch({ type: 'set-current-member', member }))
+    .then(({ member }) => dispatch({ type: 'set-current-member', member }));
+
+export const protectedNavigate = (dispatch, getState) => page =>
+  updateCurrentMember(dispatch, getState)()
     .then(() => conditionalNavigate(dispatch, getState)(page))
     .catch(() => navigate(dispatch, getState)('register'));
 
