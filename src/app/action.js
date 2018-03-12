@@ -1,6 +1,17 @@
 import { PAGES } from './update-state';
-import { getCurrentMember } from './extract-state';
-import { getAllStations, getLoggedMember } from './service';
+import { getCurrentMember, getLoginFormEmail } from './extract-state';
+import { createSession, getAllStations, getLoggedMember } from './service';
+
+export const logIn = (dispatch, getState) => event => {
+  const email = getLoginFormEmail(getState());
+  const doProtectedNavigate = protectedNavigate(dispatch, getState);
+
+  if (event && event.preventDefault) {
+    event.preventDefault();
+  }
+
+  return createSession({ email }).then(() => doProtectedNavigate('renting'));
+};
 
 export const loadPage = dispatch => page => {
   switch (page) {

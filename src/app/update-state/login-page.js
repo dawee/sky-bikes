@@ -1,5 +1,4 @@
-import { getLoginFormEmail } from '../extract-state';
-import * as service from '../service';
+import { logIn } from '../action';
 
 const updateLoginFormEmail = dispatch => (
   state = {
@@ -25,10 +24,7 @@ const updateLoginForm = (dispatch, getState) => (
   state = {
     submit: {
       title: 'Log in',
-      handler: event => {
-        event.preventDefault();
-        service.createSession({ email: getLoginFormEmail(getState()) });
-      }
+      handler: logIn(dispatch, getState)
     }
   },
   action
