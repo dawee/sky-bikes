@@ -77,8 +77,8 @@
   outline: none;
 }
 
-.slot.empty button,
-.slot.empty button:hover {
+.slot button.disabled,
+.slot button.disabled:hover {
   color: #c8d6e5;
   background-color: white;
   cursor: inherit;

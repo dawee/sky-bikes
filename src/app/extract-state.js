@@ -8,3 +8,9 @@ export const getRegisterFormPayload = state => ({
 });
 
 export const getCurrentMember = state => state.members[state.currentMemberUUID];
+
+export const hasCurrentMemberRent = state => {
+  const member = getCurrentMember(state);
+
+  return !(member.rentingHoursLeft === null);
+};
