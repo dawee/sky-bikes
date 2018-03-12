@@ -17,6 +17,9 @@ const updateState = (dispatch, getState) => (
   },
   action
 ) => {
+  const updatePage = (page, action, pageState) =>
+    PAGES[page](dispatch, getState)(pageState, action);
+
   switch (action.type) {
     case 'navigate':
       if (state.currentPage !== action.page) {
@@ -26,17 +29,11 @@ const updateState = (dispatch, getState) => (
       return {
         ...state,
         currentPage: action.page,
-        page: PAGES[action.page](dispatch, getState)(undefined, action)
+        page: updatePage(action.page, action)
       };
     default:
       return state.currentPage
-        ? {
-            ...state,
-            page: PAGES[state.currentPage](dispatch, getState)(
-              state.page,
-              action
-            )
-          }
+        ? { ...state, page: updatePage(state.currentPage, action, state.page) }
         : state;
   }
 };
