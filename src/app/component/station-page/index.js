@@ -2,6 +2,7 @@ import renderStation from '../station';
 import './style.css';
 
 const render = templates => (props, node) => {
+  const { currentStationIndex, stations } = props;
   const station = renderStation(templates);
   const contentNode = node.querySelector('.content');
   const stationNode = contentNode.querySelector('.station');
@@ -9,9 +10,9 @@ const render = templates => (props, node) => {
   node.classList.add('station-page');
 
   if (stationNode) {
-    station(props.stations[0], stationNode);
+    station(stations[currentStationIndex], stationNode);
   } else {
-    contentNode.appendChild(station(props.stations[0]));
+    contentNode.appendChild(station(stations[currentStationIndex]));
   }
 
   return node;

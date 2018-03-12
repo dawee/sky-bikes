@@ -12,6 +12,26 @@ import {
   rentBike
 } from './service';
 
+export const openPreviousStation = (dispatch, getState) => () => {
+  const state = getState();
+  const index =
+    state.page.currentStationIndex <= 0
+      ? state.page.stations.length - 1
+      : state.page.currentStationIndex - 1;
+
+  return dispatch({ type: 'set-station-index', index });
+};
+
+export const openNextStation = (dispatch, getState) => () => {
+  const state = getState();
+  const index =
+    state.page.currentStationIndex >= state.page.stations.length
+      ? 0
+      : state.page.currentStationIndex + 1;
+
+  return dispatch({ type: 'set-station-index', index });
+};
+
 export const tryToRentBike = (dispatch, getState) => bike => {
   const doProtectedNavigate = protectedNavigate(dispatch, getState);
 

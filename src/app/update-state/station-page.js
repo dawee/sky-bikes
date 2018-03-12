@@ -1,5 +1,5 @@
 import { hasCurrentMemberRent } from '../extract-state';
-import { tryToRentBike } from '../action';
+import { tryToRentBike, openPreviousStation, openNextStation } from '../action';
 
 const formatStationSlot = (dispatch, getState) => slot => {
   let title;
@@ -35,6 +35,8 @@ const formatStationSlot = (dispatch, getState) => slot => {
 
 const formatStation = (dispatch, getState) => station => ({
   ...station,
+  onClickPrevious: openPreviousStation(dispatch, getState),
+  onClickNext: openNextStation(dispatch, getState),
   slots: Object.keys(station).reduce((slots, slotId) => {
     const doFormatStationSlot = formatStationSlot(dispatch, getState);
 
@@ -42,15 +44,23 @@ const formatStation = (dispatch, getState) => station => ({
       return slots;
     }
 
-    return { ...slots, [slotId]: doFormatStationSlot(station[slotId]) };
+    return {
+      ...slots,
+      [slotId]: doFormatStationSlot(station[slotId])
+    };
   }, {})
 });
 
 const updateStationPage = (dispatch, getState) => (
-  state = { stations: [{ slots: {} }] },
+  state = { currentStationIndex: 0, stations: [{ slots: {} }] },
   action
 ) => {
   switch (action.type) {
+    case 'set-station-index':
+      return {
+        ...state,
+        currentStationIndex: action.index
+      };
     case 'fetch-stations-success':
       return {
         ...state,

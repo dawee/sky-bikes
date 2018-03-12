@@ -1,27 +1,39 @@
+import { createUpdateHandler } from '../../handler';
 import renderStationSlot from '../station-slot';
 import './style.css';
 
 // Bike SVG path credits to : Federico Panzano (the noun project)
 
-const render = templates => (props, node) => {
-  const { slots } = props;
-  const stationSlot = renderStationSlot(templates);
-  const slotsNode = node.querySelector('.slots');
+const render = templates => {
+  const updateHandler = createUpdateHandler();
 
-  node.classList.add('station');
+  return (props, node) => {
+    const { name, slots, onClickPrevious, onClickNext } = props;
+    const stationSlot = renderStationSlot(templates);
+    const slotsNode = node.querySelector('.slots');
+    const nameNode = node.querySelector('.name');
+    const previousNode = node.querySelector('.nav-previous');
+    const nextNode = node.querySelector('.nav-next');
 
-  Object.keys(slots).forEach(slotId => {
-    const slot = slots[slotId];
-    const slotNode = node.querySelector(`.${slotId}`);
+    updateHandler('previousNode', previousNode, 'click', onClickPrevious);
+    updateHandler('nextNode', nextNode, 'click', onClickNext);
 
-    if (slotNode) {
-      stationSlot({ ...slot, slotId }, slotNode);
-    } else {
-      slotsNode.appendChild(stationSlot({ ...slot, slotId }));
-    }
-  });
+    node.classList.add('station');
+    nameNode.textContent = name;
 
-  return node;
+    Object.keys(slots).forEach(slotId => {
+      const slot = slots[slotId];
+      const slotNode = node.querySelector(`.${slotId}`);
+
+      if (slotNode) {
+        stationSlot({ ...slot, slotId }, slotNode);
+      } else {
+        slotsNode.appendChild(stationSlot({ ...slot, slotId }));
+      }
+    });
+
+    return node;
+  };
 };
 
 const renderStation = templates => {

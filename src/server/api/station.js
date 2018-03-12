@@ -15,7 +15,7 @@ const listAllStation = context => async (req, res) => {
 
       return fed.reduce(
         (formated, { slot, bike }) => ({ ...formated, [`slot${slot}`]: bike }),
-        {}
+        { name: station.name }
       );
     })
   );

@@ -1,6 +1,19 @@
+.station header {
+  display: flex;
+  flex-flow: row;
+  width: 18em;
+  justify-content: space-between;
+}
+
 .slots {
   display: flex;
   flex-flow: column;
   width: 100%;
   align-items: center;
+}
+
+.nav {
+  width: 2em;
+  height: 2em;
+  cursor: pointer;
 }
