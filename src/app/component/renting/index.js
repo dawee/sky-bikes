@@ -1,7 +1,8 @@
 import './style.css';
 
 const render = () => (props, node) => {
-  const { rentingSentence, timeSentence, returnBike } = props;
+  const { bikeColor, rentingSentence, timeSentence, returnBike } = props;
+  const bikeNode = node.querySelector('.bike');
   const rentingSentenceNode = node.querySelector('.renting-sentence');
   const timeSentenceNode = node.querySelector('.time-sentence');
   const returnBikeNode = node.querySelector('.return-bike');
@@ -14,6 +15,7 @@ const render = () => (props, node) => {
       timeSentence[partName];
   });
 
+  bikeNode.style.fill = bikeColor;
   returnBikeNode.textContent = returnBike.title;
 
   return node;

@@ -1,5 +1,6 @@
 const updateRentingPage = () => () => ({
   renting: {
+    bikeColor: 'blue',
     rentingSentence: 'You are currently renting a bike',
     timeSentence: {
       begin: 'You have',
