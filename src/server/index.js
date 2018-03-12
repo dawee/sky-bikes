@@ -5,29 +5,29 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 const { User } = require('./model/user');
 const { Bike, createBike } = require('./model/bike');
-const { Station } = require('./model/station');
+const { Station, createStation } = require('./model/station');
 const memberAPI = require('./api/member');
 const rentingAPI = require('./api/renting');
 const sessionAPI = require('./api/session');
 const stationAPI = require('./api/station');
 
-const createStation = async name => {
-  const station = await new Station({ name, capacity: 10 }).save();
+const createStationWithBikes = async name => {
+  const station = await createStation({ name, capacity: 10 });
 
-  await createBike({ color: '#9400D3', link: { station, slot: 0 } }),
-    await createBike({ color: '#4B0082', link: { station, slot: 1 } }),
-    await createBike({ color: '#0000FF', link: { station, slot: 2 } }),
-    await createBike({ color: '#00FF00', link: { station, slot: 3 } }),
-    await createBike({ color: '#FFFF00', link: { station, slot: 4 } }),
-    await createBike({ color: '#FF7F00', link: { station, slot: 5 } }),
-    await createBike({ color: '#FF0000', link: { station, slot: 6 } });
+  await createBike({ color: '#9400D3', link: { station, slot: 0 } });
+  await createBike({ color: '#4B0082', link: { station, slot: 1 } });
+  await createBike({ color: '#0000FF', link: { station, slot: 2 } });
+  await createBike({ color: '#00FF00', link: { station, slot: 3 } });
+  await createBike({ color: '#FFFF00', link: { station, slot: 4 } });
+  await createBike({ color: '#FF7F00', link: { station, slot: 5 } });
+  await createBike({ color: '#FF0000', link: { station, slot: 6 } });
 };
 
 const createInitialDocuments = async () =>
   Promise.all([
-    createStation('Brooklyn'),
-    createStation('Manhattan'),
-    createStation('Broadway'),
+    createStationWithBikes('Brooklyn'),
+    createStationWithBikes('Manhattan'),
+    createStationWithBikes('Broadway'),
     new User({ uuid: hat(), email: 'admin@skybikes.com', role: 'admin' }).save()
   ]);
 
@@ -80,6 +80,7 @@ const createServer = async (dbURI, middlewares = []) => {
   server.post('/api/renting', rentingAPI.post(context));
   server.post('/api/session', sessionAPI.post(context));
   server.get('/api/station/all', stationAPI.all(context));
+  server.patch('/api/station/:uuid', stationAPI.patch(context));
 
   return server;
 };

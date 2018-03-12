@@ -74,3 +74,28 @@ test('should get the saved rentingHoursLeft when fetching profile after starting
       role: 'member'
     }
   ));
+
+test('should return bike when giving an available slot', t =>
+  createContext(
+    async ({ Bike, Station, patch, post }) => {
+      const bike = await Bike.findOne()
+        .where('link.station')
+        .ne(null);
+
+      const rentingRes = await post('/api/renting', { uuid: bike.uuid });
+
+      t.is(rentingRes.status, 200);
+
+      const station = await Station.findOne();
+
+      const res = await patch(`/api/station/${station.uuid}`, {
+        bike: { slot: 9, uuid: bike.uuid }
+      });
+
+      t.is(res.status, 200);
+    },
+    justRegisteredMemberFixtures,
+    {
+      role: 'member'
+    }
+  ));

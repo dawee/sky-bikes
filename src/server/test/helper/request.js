@@ -12,6 +12,18 @@ const createPostMethod = server => (uriPath, body) =>
       })
   );
 
+const createPatchMethod = server => (uriPath, body) =>
+  new Promise((resolve, reject) =>
+    supertest(server)
+      .patch(uriPath)
+      .send(body)
+      .end((err, res) => {
+        if (err) return reject(err);
+
+        return resolve(res);
+      })
+  );
+
 const createGetMethod = server => uriPath =>
   new Promise((resolve, reject) =>
     supertest(server)
@@ -23,4 +35,4 @@ const createGetMethod = server => uriPath =>
       })
   );
 
-module.exports = { createPostMethod, createGetMethod };
+module.exports = { createPatchMethod, createPostMethod, createGetMethod };

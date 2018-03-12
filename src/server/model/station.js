@@ -1,10 +1,18 @@
+const hat = require('hat');
 const mongoose = require('mongoose');
 
 const schema = new mongoose.Schema({
   name: String,
-  capacity: Number
+  capacity: Number,
+  uuid: String
 });
 
 const Station = mongoose.model('station', schema);
 
-module.exports = { Station };
+const createStation = data =>
+  new Station({
+    ...data,
+    uuid: hat()
+  }).save();
+
+module.exports = { createStation, Station };

@@ -26,6 +26,50 @@ const listAllStation = context => async (req, res) => {
     .end();
 };
 
+const returnBike = context => async (req, res) => {
+  const { Bike, User, Station } = context;
+  const { bike: { slot, uuid: bikeUUID } } = req.body;
+  const { uuid } = req.params;
+
+  const user = await User.findOne({ sessionID: req.sessionID });
+
+  if (!user) {
+    return res.status(403).end();
+  }
+
+  const station = await Station.findOne({ uuid });
+  const bike = await Bike.findOne({ uuid: bikeUUID });
+
+  if (!station || !bike || bike.link.station !== null) {
+    return res.status(409).end();
+  }
+
+  const slotBike = await Bike.findOne()
+    .where('link.station')
+    .equals(station)
+    .where('link.slot')
+    .equals(slot);
+
+  if (slotBike) {
+    return res.status(422).end();
+  }
+
+  if (!user._id.equals(bike.renter)) {
+    return res.status(403).end();
+  }
+
+  bike.link.station = station;
+  bike.link.slot = slot;
+  bike.renter = null;
+  user.lastRentStartDate = null;
+
+  await bike.save();
+  await user.save();
+
+  return res.status(200).end();
+};
+
 module.exports = {
-  all: listAllStation
+  all: listAllStation,
+  patch: returnBike
 };

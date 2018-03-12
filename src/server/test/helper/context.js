@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 const createServer = require('../..');
-const { createPostMethod, createGetMethod } = require('./request');
+const {
+  createPatchMethod,
+  createPostMethod,
+  createGetMethod
+} = require('./request');
 const { createKeepSessionMiddleware } = require('./session');
 
 const createContext = async (testHandler, fixtures, userToLog) => {
@@ -26,6 +30,7 @@ const createContext = async (testHandler, fixtures, userToLog) => {
     );
   }
 
+  const patch = createPatchMethod(server);
   const post = createPostMethod(server);
   const get = createGetMethod(server);
   const User = mongoose.model('user');
@@ -39,7 +44,7 @@ const createContext = async (testHandler, fixtures, userToLog) => {
     await post('/api/session', { email });
   }
 
-  return testHandler({ get, post, User, Bike, Station });
+  return testHandler({ get, patch, post, User, Bike, Station });
 };
 
 module.exports = createContext;
