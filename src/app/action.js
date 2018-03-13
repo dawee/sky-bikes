@@ -98,7 +98,7 @@ export const updateAllStations = dispatch => () =>
 export const updateRentingData = (dispatch, getState) => () => {
   const { bike, rentingHoursLeft } = getCurrentMember(getState());
 
-  if (!bike || !rentingHoursLeft) {
+  if (!bike) {
     return Promise.resolve(null);
   }
 
@@ -138,7 +138,7 @@ export const conditionalNavigate = (dispatch, getState) => page => {
 
   switch (page) {
     case 'renting':
-      return member.rentingHoursLeft === null
+      return !member.bike || !member.bike.color
         ? doNavigate('station')
         : doNavigate('renting');
     default:

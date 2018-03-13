@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: space-around;
   margin-bottom: 0.25rem;
-  width: 18rem;
+  width: 25rem;
 }
 
 .slot .bike {
@@ -70,7 +70,7 @@
   font-size: 1rem;
   border-radius: 0.25rem;
   cursor: pointer;
-  width: 10rem;
+  width: 12rem;
 }
 
 .slot button:active,

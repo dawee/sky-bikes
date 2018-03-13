@@ -1,0 +1,56 @@
+.renting {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+}
+
+.renting-sentence,
+.time-sentence {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.time-sentence .value {
+  margin: 0 0.5rem;
+  font-weight: bold;
+}
+
+.renting .bike {
+  width: 30rem;
+}
+
+.renting .return-bike {
+  box-sizing: border-box;
+  border-color: #576574;
+  background-color: white;
+  color: #576574;
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  width: 12rem;
+}
+
+.renting .return-bike:active,
+.renting .return-bike:focus {
+  outline: none;
+}
+
+.renting .return-bike.disabled,
+.renting .return-bike.disabled:hover {
+  color: #c8d6e5;
+  background-color: white;
+  cursor: inherit;
+  border-width: 0;
+}
+
+.renting .return-bike:hover {
+  background-color: #576574;
+  color: white;
+  transition: all 0.3s;
+}
