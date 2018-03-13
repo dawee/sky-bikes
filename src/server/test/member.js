@@ -11,6 +11,21 @@ test('should create a session using his email address', t =>
     t.is(res.status, 200);
   }, justRegisteredMemberFixtures));
 
+test('should remove a session', t =>
+  createContext(
+    async ({ User, del }) => {
+      const user = await User.findOne({ role: 'member' });
+      const { uuid } = user.toObject();
+      const res = await del(`/api/session/${uuid}`);
+
+      t.is(res.status, 200);
+    },
+    justRegisteredMemberFixtures,
+    {
+      role: 'member'
+    }
+  ));
+
 test('should rent a bike using a bike UUID if has valid session', t =>
   createContext(
     async ({ Bike, post }) => {

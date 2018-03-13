@@ -1,5 +1,16 @@
 const supertest = require('supertest');
 
+const createDeleteMethod = server => uriPath =>
+  new Promise((resolve, reject) =>
+    supertest(server)
+      .del(uriPath)
+      .end((err, res) => {
+        if (err) return reject(err);
+
+        return resolve(res);
+      })
+  );
+
 const createPostMethod = server => (uriPath, body) =>
   new Promise((resolve, reject) =>
     supertest(server)
@@ -35,4 +46,9 @@ const createGetMethod = server => uriPath =>
       })
   );
 
-module.exports = { createPatchMethod, createPostMethod, createGetMethod };
+module.exports = {
+  createDeleteMethod,
+  createPatchMethod,
+  createPostMethod,
+  createGetMethod
+};

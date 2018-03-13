@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const createServer = require('../..');
 const {
+  createDeleteMethod,
   createPatchMethod,
   createPostMethod,
   createGetMethod
@@ -30,6 +31,7 @@ const createContext = async (testHandler, fixtures, userToLog) => {
     );
   }
 
+  const del = createDeleteMethod(server);
   const patch = createPatchMethod(server);
   const post = createPostMethod(server);
   const get = createGetMethod(server);
@@ -44,7 +46,7 @@ const createContext = async (testHandler, fixtures, userToLog) => {
     await post('/api/session', { email });
   }
 
-  return testHandler({ get, patch, post, User, Bike, Station });
+  return testHandler({ del, get, patch, post, User, Bike, Station });
 };
 
 module.exports = createContext;

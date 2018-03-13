@@ -129,6 +129,7 @@ const createServer = async (dbURI, middlewares = [], enableTimer = false) => {
   server.get('/api/member/all', memberAPI.all(context));
   server.post('/api/renting', rentingAPI.post(context));
   server.post('/api/session', sessionAPI.post(context));
+  server.delete('/api/session/:uuid', sessionAPI.del(context));
   server.get('/api/station/all', stationAPI.all(context));
   server.patch('/api/station/:uuid', stationAPI.patch(context));
 
