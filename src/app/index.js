@@ -42,7 +42,7 @@ const createRootNode = () => {
         // eslint-disable-next-line no-undef
         if (process.env.NODE_ENV === 'development') {
           // eslint-disable-next-line no-console
-          console.log(`%c${action.type}`, 'color: #5f27cd', { action, state });
+          // console.log(`%c${action.type}`, 'color: #5f27cd', { action, state });
         }
       }, 0);
     });

@@ -6,10 +6,10 @@ import './style.css';
 
 const render = templates => {
   const updateHandler = createUpdateHandler();
+  const stationSlot = renderStationSlot(templates);
 
   return (props, node) => {
     const { name, slots, onClickPrevious, onClickNext } = props;
-    const stationSlot = renderStationSlot(templates);
     const slotsNode = node.querySelector('.slots');
     const nameNode = node.querySelector('.name');
     const previousNode = node.querySelector('.nav-previous');

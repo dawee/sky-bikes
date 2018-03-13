@@ -1,18 +1,23 @@
 export const createUpdateHandler = () => {
-  const handlers = {};
+  let handlers = [];
 
   return (name, node, eventName, handler) => {
-    if (handler === handlers[name]) {
-      return;
+    let nodeHandlers = handlers.find(
+      ({ node: handlersNode }) => handlersNode === node
+    );
+
+    if (!nodeHandlers) {
+      nodeHandlers = { node };
+      handlers = handlers.concat([nodeHandlers]);
     }
 
-    if (handlers[name]) {
-      node.removeEventListener(eventName, handlers[name]);
+    if (nodeHandlers[name]) {
+      node.removeEventListener(eventName, nodeHandlers[name]);
     }
 
     if (handler) {
       node.addEventListener(eventName, handler);
-      handlers[name] = handler;
+      nodeHandlers[name] = handler;
     }
   };
 };

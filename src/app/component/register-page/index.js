@@ -1,30 +1,33 @@
 import renderRegisterForm from '../register-form';
 import './style.css';
 
-const render = templates => (props, node) => {
-  const { title, form } = props;
+const render = templates => {
   const registerForm = renderRegisterForm(templates);
-  const contentNode = node.querySelector('.content');
-  const formNode = contentNode.querySelector('.register-form');
 
-  let titleNode = contentNode.querySelector('h1');
+  return (props, node) => {
+    const { title, form } = props;
+    const contentNode = node.querySelector('.content');
+    const formNode = contentNode.querySelector('.register-form');
 
-  node.classList.add('register-page');
+    let titleNode = contentNode.querySelector('h1');
 
-  if (!titleNode) {
-    titleNode = document.createElement('h1');
-    contentNode.appendChild(titleNode);
-  }
+    node.classList.add('register-page');
 
-  titleNode.textContent = title;
+    if (!titleNode) {
+      titleNode = document.createElement('h1');
+      contentNode.appendChild(titleNode);
+    }
 
-  if (formNode) {
-    registerForm(form, formNode);
-  } else {
-    contentNode.appendChild(registerForm(form));
-  }
+    titleNode.textContent = title;
 
-  return node;
+    if (formNode) {
+      registerForm(form, formNode);
+    } else {
+      contentNode.appendChild(registerForm(form));
+    }
+
+    return node;
+  };
 };
 
 const renderRegisterPage = templates => {

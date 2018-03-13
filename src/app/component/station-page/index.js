@@ -1,21 +1,24 @@
 import renderStation from '../station';
 import './style.css';
 
-const render = templates => (props, node) => {
-  const { currentStationIndex, stations } = props;
+const render = templates => {
   const station = renderStation(templates);
-  const contentNode = node.querySelector('.content');
-  const stationNode = contentNode.querySelector('.station');
 
-  node.classList.add('station-page');
+  return (props, node) => {
+    const { currentStationIndex, stations } = props;
+    const contentNode = node.querySelector('.content');
+    const stationNode = contentNode.querySelector('.station');
 
-  if (stationNode) {
-    station(stations[currentStationIndex], stationNode);
-  } else {
-    contentNode.appendChild(station(stations[currentStationIndex]));
-  }
+    node.classList.add('station-page');
 
-  return node;
+    if (stationNode) {
+      station(stations[currentStationIndex], stationNode);
+    } else {
+      contentNode.appendChild(station(stations[currentStationIndex]));
+    }
+
+    return node;
+  };
 };
 
 const renderStationPage = templates => {

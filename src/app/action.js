@@ -98,7 +98,7 @@ export const updateAllStations = dispatch => () =>
 export const updateRentingData = (dispatch, getState) => () => {
   const { bike, rentingHoursLeft } = getCurrentMember(getState());
 
-  if (!bike) {
+  if (!bike || !rentingHoursLeft) {
     return Promise.resolve(null);
   }
 
