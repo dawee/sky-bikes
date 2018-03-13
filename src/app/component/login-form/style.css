@@ -24,3 +24,15 @@
   user-select: no-select;
   cursor: pointer;
 }
+
+.register-link,
+.register-link a,
+.register-link a:hover,
+.register-link a:focus,
+.register-link a:visited {
+  color: white;
+}
+
+.register-link {
+  margin-top: 1em;
+}
