@@ -155,6 +155,10 @@ export const conditionalNavigate = (dispatch, getState) => page => {
   const doNavigate = navigate(dispatch, getState);
   const member = getCurrentMember(getState());
 
+  if (member.role == 'admin') {
+    return doNavigate('admin');
+  }
+
   switch (page) {
     case 'renting':
       return !member.bike || !member.bike.color

@@ -1,5 +1,13 @@
-const updateAdminPage = () => (
+import { logout } from '../action';
+
+const updateAdminPage = (dispatch, getState) => (
   state = {
+    header: {
+      logout: {
+        title: 'Log out',
+        onClick: logout(dispatch, getState)
+      }
+    },
     stations: [],
     members: []
   },
