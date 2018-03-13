@@ -10,9 +10,18 @@ import {
   getLoggedMember,
   register,
   rentBike,
-  sendBikeToStation
+  sendBikeToStation,
+  deleteSession
 } from './service';
 import formatTime from './format-time';
+
+export const logout = (dispatch, getState) => event => {
+  const { uuid } = getCurrentMember(getState());
+  const doNavigate = navigate(dispatch, getState);
+
+  event.preventDefault();
+  return deleteSession(uuid).then(() => doNavigate('login'));
+};
 
 export const updateTimer = (dispatch, getState) => milliDt => {
   const { bike, rentingHoursLeft, uuid } = getCurrentMember(getState());

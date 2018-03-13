@@ -1,7 +1,13 @@
-import { protectedNavigate } from '../action';
+import { protectedNavigate, logout } from '../action';
 
 const updateRentingPage = (dispatch, getState) => (
   state = {
+    header: {
+      logout: {
+        title: 'Log out',
+        onClick: logout(dispatch, getState)
+      }
+    },
     renting: {
       rentingSentence: 'You are currently renting a bike',
       timeSentence: {

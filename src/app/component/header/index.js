@@ -1,11 +1,20 @@
+import { createUpdateHandler } from '../../handler';
 import './style.css';
 
-const render = () => (props, node) => {
-  node.classList.add('header');
+const render = () => {
+  const updateHandler = createUpdateHandler();
 
-  node.querySelector('.title').textContent = 'Sky Bikes!';
+  return (props, node) => {
+    const { logout } = props;
+    const logoutNode = node.querySelector('.logout');
 
-  return node;
+    node.classList.add('header');
+    node.querySelector('.title').textContent = 'Sky Bikes!';
+    logoutNode.textContent = logout.title;
+    updateHandler('logoutClick', logoutNode, 'click', logout.onClick);
+
+    return node;
+  };
 };
 
 const renderLoginPage = templates => {

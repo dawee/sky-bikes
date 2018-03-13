@@ -3,7 +3,8 @@ import {
   tryToRentBike,
   openPreviousStation,
   openNextStation,
-  returnBike
+  returnBike,
+  logout
 } from '../action';
 
 const formatStationSlot = (dispatch, getState) => (
@@ -66,7 +67,17 @@ const formatStation = (dispatch, getState) => station => ({
 });
 
 const updateStationPage = (dispatch, getState) => (
-  state = { currentStationIndex: 0, stations: [{ slots: {} }] },
+  state = {
+    header: {
+      logout: {
+        title: 'Log out',
+        onClick: logout(dispatch, getState)
+      }
+    },
+
+    currentStationIndex: 0,
+    stations: [{ slots: {} }]
+  },
   action
 ) => {
   switch (action.type) {

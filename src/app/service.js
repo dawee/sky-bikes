@@ -9,6 +9,16 @@ export const createSession = payload =>
     }
   });
 
+export const deleteSession = memberUUID =>
+  fetch(`/api/session/${memberUUID}`, {
+    method: 'DELETE',
+    credentials: 'include',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
+  });
+
 export const register = payload =>
   fetch('/api/member', {
     method: 'POST',
