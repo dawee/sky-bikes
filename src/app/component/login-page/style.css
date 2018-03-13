@@ -11,11 +11,11 @@
 .login-page > .content {
   position: relative;
   box-sizing: border-box;
-  width: 20em;
+  width: 20rem;
   text-align: center;
 }
 
 .login-page > .content > h1 {
   color: white;
-  margin-bottom: 1em;
+  margin-bottom: 1rem;
 }
