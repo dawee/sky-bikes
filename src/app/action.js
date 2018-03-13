@@ -120,6 +120,8 @@ export const updateRentingData = (dispatch, getState) => () => {
 
 export const loadPage = (dispatch, getState) => page => {
   switch (page) {
+    case 'admin':
+      return updateAllStations(dispatch, getState)();
     case 'renting':
       return updateRentingData(dispatch, getState)();
     case 'station':

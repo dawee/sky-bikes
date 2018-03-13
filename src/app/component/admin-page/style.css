@@ -1,0 +1,18 @@
+.admin-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+}
+
+.admin-page table {
+  border-collapse: collapse;
+}
+
+.admin-page table th,
+.admin-page table td {
+  border: 1px solid black;
+  padding: 0.25rem;
+  min-width: 5rem;
+  text-align: center;
+}
