@@ -37,6 +37,17 @@ const updateState = (dispatch, getState) => (
         ...state,
         currentMemberUUID: member.uuid
       };
+    case 'set-renting-hours-left':
+      return {
+        ...state,
+        members: {
+          ...state.members,
+          [action.memberUUID]: {
+            ...state.members[action.memberUUID],
+            rentingHoursLeft: action.rentingHoursLeft
+          }
+        }
+      };
     default:
       return state.currentPage
         ? { ...state, page: updatePage(state.currentPage, action, state.page) }

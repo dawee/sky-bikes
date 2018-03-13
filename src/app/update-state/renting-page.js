@@ -1,27 +1,12 @@
 import { protectedNavigate } from '../action';
-import { getCurrentMember } from '../extract-state';
 
-const digits = value => (`${value}`.length === 1 ? `0${value}` : `${value}`);
-
-const formatTime = rawHours => {
-  const hours = Math.floor(rawHours);
-  const rawMinutes = (rawHours - hours) * 60;
-  const minutes = Math.floor(rawMinutes);
-  const seconds = Math.floor((rawMinutes - minutes) * 60);
-
-  return `${digits(hours)}:${digits(minutes)}:${digits(seconds)}`;
-};
-
-const updateRentingPage = (dispatch, getState) => () => {
-  const { bike, rentingHoursLeft } = getCurrentMember(getState());
-
-  return {
+const updateRentingPage = (dispatch, getState) => (
+  state = {
     renting: {
-      bikeColor: bike.color,
       rentingSentence: 'You are currently renting a bike',
       timeSentence: {
         begin: 'You have',
-        value: formatTime(rentingHoursLeft),
+        value: '',
         end: 'left to return it'
       },
       returnBike: {
@@ -29,7 +14,25 @@ const updateRentingPage = (dispatch, getState) => () => {
         handler: () => protectedNavigate(dispatch, getState)('station')
       }
     }
-  };
+  },
+  action
+) => {
+  switch (action.type) {
+    case 'update-renting-data':
+      return {
+        ...state,
+        renting: {
+          ...state.renting,
+          bikeColor: action.bikeColor,
+          timeSentence: {
+            ...state.renting.timeSentence,
+            value: action.formatedTime
+          }
+        }
+      };
+    default:
+      return state;
+  }
 };
 
 export default updateRentingPage;

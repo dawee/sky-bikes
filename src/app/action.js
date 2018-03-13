@@ -12,6 +12,25 @@ import {
   rentBike,
   sendBikeToStation
 } from './service';
+import formatTime from './format-time';
+
+export const updateTimer = (dispatch, getState) => milliDt => {
+  const { bike, rentingHoursLeft, uuid } = getCurrentMember(getState());
+
+  if (!bike || !rentingHoursLeft) {
+    return Promise.resolve(null);
+  }
+
+  const gap = milliDt / 2000;
+  const nextRentingHoursLeft =
+    rentingHoursLeft - gap < 0 ? 0 : rentingHoursLeft - gap;
+
+  return dispatch({
+    type: 'set-renting-hours-left',
+    rentingHoursLeft: nextRentingHoursLeft,
+    memberUUID: uuid
+  });
+};
 
 export const returnBike = (dispatch, getState) => (stationUUID, slotIndex) => {
   const { bike } = getCurrentMember(getState());
@@ -76,8 +95,24 @@ export const updateAllStations = dispatch => () =>
     dispatch({ type: 'fetch-stations-success', stations })
   );
 
+export const updateRentingData = (dispatch, getState) => () => {
+  const { bike, rentingHoursLeft } = getCurrentMember(getState());
+
+  if (!bike) {
+    return Promise.resolve(null);
+  }
+
+  return dispatch({
+    type: 'update-renting-data',
+    bikeColor: bike.color,
+    formatedTime: formatTime(rentingHoursLeft)
+  });
+};
+
 export const loadPage = (dispatch, getState) => page => {
   switch (page) {
+    case 'renting':
+      return updateRentingData(dispatch, getState)();
     case 'station':
       return updateAllStations(dispatch, getState)();
     default:
@@ -124,11 +159,29 @@ export const protectedNavigate = (dispatch, getState) => page =>
 export const bootApp = (dispatch, getState) => () => {
   const doNavigate = navigate(dispatch, getState);
   const doProtectedNavigate = protectedNavigate(dispatch, getState);
+  const doUpdateTimer = updateTimer(dispatch, getState);
+  const doUpdateRentingData = updateRentingData(dispatch, getState);
   const requestedRoute = location.pathname.match(/\/?(\w+)/);
   const requestedPage =
     Object.keys(PAGES).indexOf(requestedRoute && requestedRoute[1]) >= 0
       ? requestedRoute[1]
       : null;
+
+  let lastTimerTimer = Date.now();
+  const armTimer = () => {
+    const now = Date.now();
+    const dt = now - lastTimerTimer;
+
+    doUpdateTimer(dt)
+      .then(doUpdateRentingData)
+      .then(() => {
+        lastTimerTimer = now;
+
+        requestAnimationFrame(armTimer);
+      });
+  };
+
+  requestAnimationFrame(armTimer);
 
   if (!requestedPage) {
     return doProtectedNavigate('renting');
