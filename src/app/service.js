@@ -62,6 +62,16 @@ export const getAllStations = () =>
     }
   }).then(res => res.json().then(({ stations }) => stations));
 
+export const getAllMembers = () =>
+  fetch('/api/member/all', {
+    method: 'GET',
+    credentials: 'include',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
+  }).then(res => res.json().then(({ members }) => members));
+
 export const getLoggedMember = () =>
   fetch('/api/member/me', {
     method: 'GET',

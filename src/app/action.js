@@ -7,6 +7,7 @@ import {
 import {
   createSession,
   getAllStations,
+  getAllMembers,
   getLoggedMember,
   register,
   rentBike,
@@ -104,6 +105,11 @@ export const updateAllStations = dispatch => () =>
     dispatch({ type: 'fetch-stations-success', stations })
   );
 
+export const updateAllMembers = dispatch => () =>
+  getAllMembers().then(members =>
+    dispatch({ type: 'fetch-members-success', members })
+  );
+
 export const updateRentingData = (dispatch, getState) => () => {
   const { bike, rentingHoursLeft } = getCurrentMember(getState());
 
@@ -121,7 +127,9 @@ export const updateRentingData = (dispatch, getState) => () => {
 export const loadPage = (dispatch, getState) => page => {
   switch (page) {
     case 'admin':
-      return updateAllStations(dispatch, getState)();
+      return updateAllMembers(dispatch, getState)().then(
+        updateAllStations(dispatch, getState)
+      );
     case 'renting':
       return updateRentingData(dispatch, getState)();
     case 'station':

@@ -1,7 +1,7 @@
 const updateAdminPage = () => (
   state = {
     stations: [],
-    users: []
+    members: []
   },
   action
 ) => {
@@ -10,6 +10,11 @@ const updateAdminPage = () => (
       return {
         ...state,
         stations: action.stations
+      };
+    case 'fetch-members-success':
+      return {
+        ...state,
+        members: action.members
       };
     default:
       return state;
