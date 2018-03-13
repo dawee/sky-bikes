@@ -1,9 +1,11 @@
+import updateAdminPage from './admin-page';
 import updateLoginPage from './login-page';
 import updateRegisterPage from './register-page';
 import updateRentingPage from './renting-page';
 import updateStationPage from './station-page';
 
 export const PAGES = {
+  admin: updateAdminPage,
   login: updateLoginPage,
   register: updateRegisterPage,
   renting: updateRentingPage,
