@@ -13,5 +13,5 @@ export const getCurrentMember = state =>
 export const hasCurrentMemberRent = state => {
   const member = getCurrentMember(state);
 
-  return !(member.rentingHoursLeft === null);
+  return !!(member.bike && member.bike.color);
 };
