@@ -7,7 +7,7 @@ const createServer = require('../src/server')
 
 const webpackCompiler = webpack(webpackConfig);
 
-createServer('mongodb://localhost/skybikes').then(server => {
+createServer('mongodb://localhost/skybikes', [], true).then(server => {
   server.use(webpackDevMiddleware(webpackCompiler, {
     publicPath: webpackConfig.output.publicPath
   }));

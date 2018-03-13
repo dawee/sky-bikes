@@ -5,7 +5,8 @@ const schema = new mongoose.Schema({
   uuid: String,
   role: String,
   sessionID: String,
-  lastRentStartDate: Date
+  lastRentStartDate: Date,
+  banned: Boolean
 });
 
 schema.virtual('rentingHoursLeft').get(function() {

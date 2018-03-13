@@ -37,7 +37,56 @@ const initializeDB = async () => {
   return !station && createInitialDocuments();
 };
 
-const createServer = async (dbURI, middlewares = []) => {
+const autoReturnBike = async bike => {
+  const stations = await Station.find();
+  const diffDate = new Date() - bike.renter.lastRentStartDate;
+
+  if (diffDate / 2000 < 8) {
+    return;
+  }
+
+  for (let station of stations) {
+    const bikesInStation = await Bike.find().where('link.station', station);
+    let foundFreeSlot = false;
+
+    for (let slot = 0; slot < 10; ++slot) {
+      const bikeInSlot = bikesInStation.find(bike => bike.link.slot === slot);
+
+      if (!bikeInSlot) {
+        foundFreeSlot = true;
+        bike.renter.sessionID = null;
+        bike.renter.lastRentStartDate = null;
+        bike.renter.banned = true;
+        await bike.renter.save();
+
+        bike.renter = null;
+        bike.link.station = station;
+        bike.link.slot = slot;
+        await bike.save();
+      }
+    }
+
+    if (foundFreeSlot) {
+      break;
+    }
+  }
+};
+
+const checkAndBan = async () => {
+  const rentedBikes = await Bike.find()
+    .populate('renter')
+    .where('renter')
+    .ne(null);
+
+  for (let bike of rentedBikes) {
+    await autoReturnBike(bike);
+  }
+};
+
+const runCheckTimer = () =>
+  setTimeout(() => checkAndBan().then(runCheckTimer), 500);
+
+const createServer = async (dbURI, middlewares = [], enableTimer = false) => {
   const db = mongoose.connect(dbURI);
   const server = express();
   const context = {
@@ -81,6 +130,10 @@ const createServer = async (dbURI, middlewares = []) => {
   server.post('/api/session', sessionAPI.post(context));
   server.get('/api/station/all', stationAPI.all(context));
   server.patch('/api/station/:uuid', stationAPI.patch(context));
+
+  if (enableTimer) {
+    runCheckTimer();
+  }
 
   return server;
 };
