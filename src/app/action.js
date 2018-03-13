@@ -154,7 +154,7 @@ export const updateCurrentMember = dispatch => () =>
 export const protectedNavigate = (dispatch, getState) => page =>
   updateCurrentMember(dispatch, getState)()
     .then(() => conditionalNavigate(dispatch, getState)(page))
-    .catch(() => navigate(dispatch, getState)('register'));
+    .catch(() => navigate(dispatch, getState)('login'));
 
 export const bootApp = (dispatch, getState) => () => {
   const doNavigate = navigate(dispatch, getState);
