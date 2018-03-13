@@ -3,7 +3,10 @@
     {
       "email": "john.doe@gmail.com",
       "uuid": "e472ac3cf5403f28f04cb497c769900f",
-      "role": "member"
+      "role": "member",
+      "firstName": "John",
+      "lastName": "Doe",
+      "emergencyPhoneNumber": "0836656565"
     }
   ]
 }

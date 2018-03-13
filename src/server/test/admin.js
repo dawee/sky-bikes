@@ -1,20 +1,25 @@
 const test = require('ava');
 const createContext = require('./helper/context');
+const justRegisteredMemberFixtures = require('./fixtures/justRegisteredMember');
 
-test('should see all stations with their initial bycicles when no one made a renting', t =>
+test('should see all users with their personal infos and banned status', t =>
   createContext(
     async ({ get }) => {
-      const res = await get('/api/station/all');
+      const res = await get('/api/member/all');
 
       t.is(res.status, 200);
-      t.is(res.body.stations[0].slot0.color, '#9400D3');
-      t.is(res.body.stations[0].slot1.color, '#4B0082');
-      t.is(res.body.stations[0].slot2.color, '#0000FF');
-      t.is(res.body.stations[0].slot3.color, '#00FF00');
-      t.is(res.body.stations[0].slot4.color, '#FFFF00');
-      t.is(res.body.stations[0].slot5.color, '#FF7F00');
-      t.is(res.body.stations[0].slot6.color, '#FF0000');
+      t.is(res.body.members.length, 1);
+      t.is(res.body.members[0].email, 'john.doe@gmail.com');
+      t.is(res.body.members[0].banned, false);
+      t.is(res.body.members[0].uuid, 'e472ac3cf5403f28f04cb497c769900f');
+      t.is(res.body.members[0].role, 'member');
+      t.is(res.body.members[0].firstName, 'John');
+      t.is(res.body.members[0].lastName, 'Doe');
+      t.is(res.body.members[0].emergencyPhoneNumber, '0836656565');
+      t.is(res.body.members[0].rentingHoursLeft, null);
     },
-    null,
-    { role: 'admin' }
+    justRegisteredMemberFixtures,
+    {
+      role: 'admin'
+    }
   ));

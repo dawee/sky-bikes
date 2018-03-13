@@ -6,7 +6,10 @@ const schema = new mongoose.Schema({
   role: String,
   sessionID: String,
   lastRentStartDate: Date,
-  banned: Boolean
+  firstName: String,
+  lastName: String,
+  emergencyPhoneNumber: String,
+  banned: { type: Boolean, default: false }
 });
 
 schema.virtual('rentingHoursLeft').get(function() {
